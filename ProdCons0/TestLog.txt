@@ -1,2 +1,0 @@
-msg(distance,dispatch,tester,consumer,distance(20),5)
-msg(distance,dispatch,tester,consumer,distance(30),6)

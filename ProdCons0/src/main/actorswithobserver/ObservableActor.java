@@ -24,12 +24,6 @@ public abstract class ObservableActor extends ActorBasic24 {
 	public boolean unRegisterObserver(ActorBasic24 actor) {
 		return observers.remove(actor);
 	}
-	
-	@Override
-	protected void sendMsg( IApplMessage msg, ActorContext24 ctx  ) {
-		super.sendMsg(msg, ctx);
-		updateResource(msg.msgContent());
-	}
 
 	protected void updateResource(String s) {
 		for(ActorBasic24 o: observers) {

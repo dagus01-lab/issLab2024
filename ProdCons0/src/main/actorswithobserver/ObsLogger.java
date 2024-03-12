@@ -21,13 +21,19 @@ public class ObsLogger extends ActorBasic24 {
 		activateAndStart();
 	}
 	
-	@Override
-	protected void elabMsg(IApplMessage msg) throws Exception {
+	protected void update(IApplMessage msg) throws Exception{
 		try {
 			 myWriter.append(msg+"\n");
 			 myWriter.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	protected void elabMsg(IApplMessage msg) throws Exception {
+		if(msg.msgId().startsWith("hello")) {
+			update(msg);
 		}
 	}
 }

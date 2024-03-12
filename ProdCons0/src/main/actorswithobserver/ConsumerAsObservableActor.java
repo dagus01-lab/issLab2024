@@ -41,8 +41,6 @@ public class ConsumerAsObservableActor extends ObservableActor{
 	 		IApplMessage reply = CommUtils.buildReply( name, "ack", outMsg, msg.msgSender());
 	        CommUtils.outgreen(name + "  | sends reply= " + reply );		
 			reply(msg, reply);
-        }else {
-            updateResource(msg.toString());        	
         }
 	}
  

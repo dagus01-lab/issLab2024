@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -32,6 +33,13 @@ private static Interaction connSupport;
 	private static ObservableActor consumer, prod;
 	private static ObsLogger obsLogger;
 	private static ActorContext24 ctx1;
+	private static File myObj ;
+    private static Scanner myReader;
+    @BeforeClass
+    public static void setUpEnv() throws IOException{
+    	myObj = new File("obsloggerLog.txt");
+    	myReader = new Scanner(myObj);
+    }
 	@BeforeClass
 	public static void activateConsumerProducerObserver() {
 		CommUtils.outmagenta("MainOneNodeWithActors24 CREA I CONTESTI ");
@@ -46,60 +54,42 @@ private static Interaction connSupport;
         prod.registerObserver(obsLogger);
         consumer.registerObserver(obsLogger);
 	}
-	@After
-	public void down() {
+	@AfterClass
+	public static void down() {
 		CommUtils.outmagenta("end of  a test "); 
+		myReader.close();
 	}
 
 	@Test
-	public void testDispatchToConsumer() {
-		 CommUtils.outmagenta("testDispatchToConsumer ======================================= ");
-		//Funge da Producer come ProducerUsingConnection
-		IApplMessage msg  = CommUtils.buildDispatch( "prod1", "distance", "distance(20)", "consumer");
-		IApplMessage msg1 = CommUtils.buildDispatch( "prod1", "distance", "distance(30)", "consumer");
+	public void testUpdateConsumer() {
+		 CommUtils.outmagenta("testUpdateConsumer ======================================= ");
 		try {
-			prod.sendMsg(msg, ctx1);
-			prod.sendMsg(msg1, ctx1);
+			prod.updateResource("res1");
+			//prod.sendMsg(msg1, ctx1);
 			CommUtils.delay(500);
- 			readLogFile();
+ 			testLogFile("res1");
 		} catch (Exception e) {
 			fail("testRequest " + e.getMessage());
  		}
 	}
 	@Test
-	public void testDispatchToProducer() {
-		 CommUtils.outmagenta("testDispatchToConsumer ======================================= ");
-		//Funge da Producer come ProducerUsingConnection
-		IApplMessage msg  = CommUtils.buildDispatch( "consumer", "update", "ok1", "prod1");
-		IApplMessage msg1 = CommUtils.buildDispatch( "consumer", "update", "ok2", "prod1");
+	public void testUpdateProducer() {
+		 CommUtils.outmagenta("testUpdateProducer ======================================= ");
 		try {
-			prod.sendMsg(msg, ctx1);
-			prod.sendMsg(msg1, ctx1);
+			prod.updateResource("res2");
+			//prod.sendMsg(msg1, ctx1);
 			CommUtils.delay(500);
-			readLogFile();
+			testLogFile("res2");
 		} catch (Exception e) {
 			fail("testRequest " + e.getMessage());
 		}
 	}
 
-	protected void readLogFile() throws IOException {	
-		String line;
-		IApplMessage m;
-	      File myObj = new File("obsloggerLog.txt");
-	      Scanner myReader = new Scanner(myObj);
-	      line = myReader.nextLine();
-	      m = new ApplMessage(line);
+	protected void testLogFile(String expected) throws IOException {	
+		
+	      String line = myReader.nextLine();
+	      ApplMessage m = new ApplMessage(line);
 	      CommUtils.outblue( ""+m  );
-	      assertEquals(m.msgContent(), "distance(20)");
-	      line = myReader.nextLine();
-	      m = new ApplMessage(line);
-	      CommUtils.outblue( ""+m  );
-	      assertEquals(m.msgContent(), "distance(30)");	      
-
-	      myReader.close();
-
-
-	
-	
+	      assertEquals(m.msgContent(), expected);	
 	}
 }
