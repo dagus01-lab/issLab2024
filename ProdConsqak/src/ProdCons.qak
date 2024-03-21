@@ -1,0 +1,64 @@
+System prodcons01
+
+Dispatch msgFd : msgFd(N) "Dispatch inviata dal producer al consumer" 
+Request msgRq : msgRq(N) "Request inviata dal producer al consumer"
+Reply msgRp : msgRp(N) "Reply inviata dal consumer al producer"
+
+Context ctxprodcons ip [host="localhost" port=8000] 
+
+QActor producer1 context ctxprodcons{
+	State s0 initial{
+		println("Producer1") color magenta
+		[# CommUtils.outblue("Hello world again") #]
+		printCurrentMessage
+		forward consumer -m msgFd : msgFd(10)
+		forward consumer -m msgFd : msgFd(30)
+		request consumer -m msgRq : msgRq(50)
+	}
+	Transition t0 whenReply msgRp -> handleRp
+	State handleRp {
+		printCurrentMessage
+		onMsg(msgRp: msgRp(N)){
+			println("$name received ${payloadArg(0)}") color black
+		}
+	}
+}  
+QActor producer2 context ctxprodcons{
+	State s0 initial{
+		println("Producer2") color magenta
+		[# CommUtils.outblue("Hello world again") #]
+		printCurrentMessage
+		forward consumer -m msgFd : msgFd(20)
+		forward consumer -m msgFd : msgFd(40)
+		request consumer -m msgRq : msgRq(60)
+	}
+	Transition t0 whenReply msgRp -> handleRp
+	State handleRp {
+		printCurrentMessage
+		onMsg(msgRp: msgRp(N)){
+			println("$name received ${payloadArg(0)}") color black
+		}
+	}
+}  
+QActor consumer context ctxprodcons{
+	State s0 initial{
+		println("$name START") color red
+	}
+	Transition t0 whenMsg msgFd -> handleFd whenRequest msgRq -> handleRq
+	State handleRq {
+		printCurrentMessage
+		onMsg(msgRq: msgRq(N)){
+			println("$name received ${payloadArg(0)}") color blue
+			[# val risposta = "${payloadArg(0)}"#]
+			replyTo msgRq with msgRp : msgRp(risposta)
+		}
+	}
+	Transition t0 whenMsg msgFd -> handleFd whenRequest msgRq -> handleRq
+	State handleFd{
+		printCurrentMessage
+		onMsg(msgFd: msgFd(N)){
+			println("$name received ${payloadArg(0)}") color yellow
+		}
+	}
+	Transition t0 whenMsg msgFd -> handleFd whenRequest msgRq -> handleRq
+}  
