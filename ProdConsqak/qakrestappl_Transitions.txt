@@ -1,3 +1,2 @@
-{"actor":"consumer", "msgType":"dispatch", "curstate":"s0", "nextstate":"handleFd", "msgId":"msgFd"}
-{"actor":"consumer", "msgType":"dispatch", "curstate":"handleRq", "nextstate":"handleFd", "msgId":"msgFd"}
-{"actor":"consumer", "msgType":"dispatch", "curstate":"handleFd", "nextstate":"handleFd", "msgId":"msgFd"}
+{"actor":"otherobserver", "msgType":"dispatch", "curstate":"s0", "nextstate":"handleUpdate", "msgId":"short"}
+{"actor":"otherobserver", "msgType":"dispatch", "curstate":"handleUpdate", "nextstate":"handleUpdate", "msgId":"short"}

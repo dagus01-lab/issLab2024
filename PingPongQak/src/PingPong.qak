@@ -1,0 +1,41 @@
+System pingpong01
+
+Dispatch msg : msg(N) "messaggio inviato che si aspetta o meno una sola risposta"
+
+Context ctxpingpong ip [host="localhost" port=8000] 
+
+QActor a context ctxpingpong {
+	State s0 initial{
+		println("A") color magenta
+		printCurrentMessage
+		forward b -m msg : msg(0)
+	}
+	Transition t0 whenMsg msg -> handleMsg
+	State handleMsg {
+		onMsg(msg: msg(N)){
+			printCurrentMessage
+			println("$name received message with payload: ${payloadArg(0)}") color magenta
+			[#System.exit(0)#]
+			[# val v = payloadArg(0) + 1#]
+			forward b -m msg:msg($v)
+		}
+	}
+	Transition t0 whenMsg msg -> handleMsg
+}
+QActor b context ctxpingpong {
+	State s0 initial{
+		println("B") color yellow
+		printCurrentMessage
+	}
+	Transition t0 whenMsg msg -> handleMsg
+	State handleMsg {
+		onMsg(msg: msg(N)){
+			printCurrentMessage
+			println("$name received message with payload: ${payloadArg(0)}") color yellow
+			[# val v = payloadArg(0) + 1#]
+			forward a -m msg:msg($v)
+			[#System.exit(0)#]
+		}
+	}
+	Transition t0 whenMsg msg -> handleMsg
+}

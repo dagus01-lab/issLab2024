@@ -1,0 +1,4 @@
+{"actor":"a", "msgType":"dispatch", "curstate":"s0", "nextstate":"handleMsg", "msgId":"msg"}
+{"actor":"a", "msgType":"dispatch", "curstate":"handleMsg", "nextstate":"handleMsg", "msgId":"msg"}
+{"actor":"b", "msgType":"dispatch", "curstate":"s0", "nextstate":"handleMsg", "msgId":"msg"}
+{"actor":"b", "msgType":"dispatch", "curstate":"handleMsg", "nextstate":"handleMsg", "msgId":"msg"}

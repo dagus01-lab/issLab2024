@@ -24,48 +24,48 @@ class Consumer ( name: String, scope: CoroutineScope, isconfined: Boolean=false 
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
-						CommUtils.outred("$name START")
+						CommUtils.outblue("$name STARTS")
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition(edgeName="t02",targetState="handleFd",cond=whenDispatch("msgFd"))
-					transition(edgeName="t03",targetState="handleRq",cond=whenRequest("msgRq"))
+					 transition(edgeName="t00",targetState="handleDispatch",cond=whenDispatch("distance"))
+					transition(edgeName="t01",targetState="handleRequest",cond=whenRequest("distance"))
 				}	 
-				state("handleRq") { //this:State
+				state("handleDispatch") { //this:State
 					action { //it:State
-						CommUtils.outcyan("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
+						CommUtils.outblue("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
 						 	   
-						if( checkMsgContent( Term.createTerm("msgRq(N)"), Term.createTerm("msgRq(N)"), 
+						updateResourceRep( "short(consumer_dispatch)"  
+						)
+						//genTimer( actor, state )
+					}
+					//After Lenzi Aug2002
+					sysaction { //it:State
+					}	 	 
+					 transition(edgeName="t02",targetState="handleDispatch",cond=whenDispatch("distance"))
+					transition(edgeName="t03",targetState="handleRequest",cond=whenRequest("distance"))
+				}	 
+				state("handleRequest") { //this:State
+					action { //it:State
+						CommUtils.outblue("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
+						 	   
+						updateResourceRep( "short(consumer_request)"  
+						)
+						updateResourceRep( "info(consumer,$currentMsg)"  
+						)
+						if( checkMsgContent( Term.createTerm("distance(N)"), Term.createTerm("distance(D)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
-								CommUtils.outblue("$name received ${payloadArg(0)}")
-								 val risposta = "${payloadArg(0)}" 
-								answer("msgRq", "msgRp", "msgRp(risposta)"   )  
+								answer("distance", "distanceack", "ack(${payloadArg(0)})"   )  
 						}
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition(edgeName="t04",targetState="handleFd",cond=whenDispatch("msgFd"))
-					transition(edgeName="t05",targetState="handleRq",cond=whenRequest("msgRq"))
-				}	 
-				state("handleFd") { //this:State
-					action { //it:State
-						CommUtils.outcyan("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
-						 	   
-						if( checkMsgContent( Term.createTerm("msgFd(N)"), Term.createTerm("msgFd(N)"), 
-						                        currentMsg.msgContent()) ) { //set msgArgList
-								CommUtils.outyellow("$name received ${payloadArg(0)}")
-						}
-						//genTimer( actor, state )
-					}
-					//After Lenzi Aug2002
-					sysaction { //it:State
-					}	 	 
-					 transition(edgeName="t06",targetState="handleFd",cond=whenDispatch("msgFd"))
-					transition(edgeName="t07",targetState="handleRq",cond=whenRequest("msgRq"))
+					 transition(edgeName="t04",targetState="handleDispatch",cond=whenDispatch("distance"))
+					transition(edgeName="t05",targetState="handleRequest",cond=whenRequest("distance"))
 				}	 
 			}
 		}

@@ -62,7 +62,7 @@ dependencies {
 
     /* COROUTINES ******************************************************************************* */
     // https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-coroutines-core
-    implementation group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-core', version: "$kotlinVersion", ext: 'pom'
+    implementation group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-core', version: "$kotlinVersion" 
     // https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-coroutines-core-jvm
     implementation group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-core-jvm', version: "$kotlinVersion"
 
@@ -169,14 +169,29 @@ task dovesiamo {
 
 distributions {
     main {
-        distributionBaseName = 'prodcons01'
+        distributionBaseName = 'prodcons24'
         contents { 
-             from './prodcons01.pl'
+             from './prodcons24.pl'
              from './sysRules.pl'
              from './facadeConfig.json'
         }
     }
 } 
+
+task runProducer(type: JavaExec) {
+    group = "Execution"
+    description = "Run the main class with JavaExecTask"
+    classpath = sourceSets.main.runtimeClasspath
+    main = 'it.unibo.ctxproducer.MainCtxproducerKt'
+}
+
+task runConsumer(type: JavaExec) {
+    group = "Execution"
+    description = "Run the main class with JavaExecTask"
+    classpath = sourceSets.main.runtimeClasspath
+    main = 'it.unibo.ctxconsumer.MainCtxconsumerKt'
+}
+
 
 /*
 //TODO

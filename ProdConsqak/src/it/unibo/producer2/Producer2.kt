@@ -24,28 +24,22 @@ class Producer2 ( name: String, scope: CoroutineScope, isconfined: Boolean=false
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
-						CommUtils.outmagenta("Producer2")
-						 CommUtils.outblue("Hello world again")  
-						CommUtils.outcyan("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
-						 	   
-						forward("msgFd", "msgFd(20)" ,"consumer" ) 
-						forward("msgFd", "msgFd(40)" ,"consumer" ) 
-						request("msgRq", "msgRq(60)" ,"consumer" )  
+						CommUtils.outblue("$name STARTS")
+						delay(500) 
+						request("distance", "distance(50)" ,"consumer" )  
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition(edgeName="t01",targetState="handleRp",cond=whenReply("msgRp"))
+					 transition(edgeName="t00",targetState="handleAnswer",cond=whenReply("distanceack"))
 				}	 
-				state("handleRp") { //this:State
+				state("handleAnswer") { //this:State
 					action { //it:State
-						CommUtils.outcyan("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
+						CommUtils.outblue("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
 						 	   
-						if( checkMsgContent( Term.createTerm("msgRp(N)"), Term.createTerm("msgRp(N)"), 
-						                        currentMsg.msgContent()) ) { //set msgArgList
-								CommUtils.outblack("$name received ${payloadArg(0)}")
-						}
+						delay(2000) 
+						 System.exit(0)  
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
