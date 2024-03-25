@@ -13,9 +13,9 @@ QActor a context ctxpingpong {
 	Transition t0 whenMsg msg -> handleMsg
 	State handleMsg {
 		onMsg(msg: msg(N)){
+			delay 2000
 			printCurrentMessage
 			println("$name received message with payload: ${payloadArg(0)}") color magenta
-			[#System.exit(0)#]
 			[# val v = payloadArg(0) + 1#]
 			forward b -m msg:msg($v)
 		}
@@ -30,6 +30,7 @@ QActor b context ctxpingpong {
 	Transition t0 whenMsg msg -> handleMsg
 	State handleMsg {
 		onMsg(msg: msg(N)){
+			delay 2000
 			printCurrentMessage
 			println("$name received message with payload: ${payloadArg(0)}") color yellow
 			[# val v = payloadArg(0) + 1#]
