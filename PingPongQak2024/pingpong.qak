@@ -1,0 +1,37 @@
+System -trace pingpong24
+Dispatch ball : ball(N) "info exchanged"
+
+Context ctxtest  ip [host="localhost" port=8010]
+
+
+QActor ping context ctxtest {
+	[#
+		val N = 1
+	#]
+	State s0 initial{
+        println("$name STARTS  ") color blue
+		forward pong -m ball:ball($N)        
+    }
+    Transition t0 whenTime 5000 -> endOfExchange whenMsg ball -> handleBall
+    State handleBall {
+    	printCurrentMessage
+    	[#System.exit(0)#]
+    }
+    State endOfExchange{
+    	println("$name exiting...") color blue
+    	[#System.exit(0)#]
+    }
+    
+}
+QActor pong context ctxtest {
+	State s0 initial{
+        println("$name STARTS  ") color green
+    }
+    Transition t0 whenMsg ball->handleBall
+    State handleBall {
+    	printCurrentMessage
+    	onMsg(ball:ball(x)){
+    		forward ping -m ball:ball($payloadArg(0))
+    	}
+    }
+}

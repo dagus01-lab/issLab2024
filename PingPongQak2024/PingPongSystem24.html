@@ -1,0 +1,667 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>PingPongSystem24</title>
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/foundation-sites@6.7.4/dist/css/foundation.min.css" crossorigin="anonymous">
+		<script src="https://cdn.jsdelivr.net/npm/foundation-sites@6.7.4/dist/js/foundation.min.js"crossorigin="anonymous"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="./commons/resources/styles/templateISS.css">
+        <link rel="stylesheet" type="text/css" href="./commons/resources/styles/main.css">
+        <link rel="stylesheet" type="text/css" href="./commons/resources/styles/navbar.css">
+        <link rel="stylesheet" type="text/css" href="./commons/resources/styles/table.css">
+        <link rel="stylesheet" type="text/css" href="./commons/resources/styles/code.css">
+        <!-- <script type="text/javascript" src="./commons/resources/scripts/myScripts.js"></script> -->
+<style type="text/css">
+body
+{
+    margin-left:  30px;
+    margin-right: 30px;
+};
+
+P
+{
+    font-family: Tahoma;
+    font-size: 10pt;
+};
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+	font-size: 93%;
+}
+
+a:hover {
+    background-color: #cccccc;
+}
+
+
+hr {
+    clear: both;
+    height: 1px;
+    color: #242424;
+    background-color: transparent;
+}
+
+h1, h2, h3 {
+    color: #242424;
+    clear: left;
+    font: 100% Tahoma, Helvetica, Arial, sans-serif;
+    margin-bottom: 0.5em;
+    padding-top: 0.5em;
+	border-radius: 10px;
+	padding: 5px;
+}
+
+top {
+	width: 100%;
+}
+
+
+#i {
+    color: #ff1010;
+}
+tt{
+	font-family: "Arial";
+    font-size: 90%;
+	color: #006600;
+}
+em{
+	font-family: "Arial";
+    font-size: 80%;
+	font-weight: bold;
+	border-style:solid;
+	border-color: #abe876;
+    color: #1632cc;
+}
+bc{
+	font-family: "Arial";
+	font-size: 90%;
+	font-weight: bold;
+    color: #990000;
+	background-color: #fcf8c7;
+}
+ks{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #0000CD	;
+	font-size: 90%;
+}
+kc{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #008000	;
+	font-size: 90%;
+}
+pre{
+	font-family: "Consolas";
+	font-size: 85%;
+	background-color: #f5f5f5;
+	border: 1.5px solid silver;
+	padding: 5px;
+}
+m{
+	font-family: "Helvetica";
+	line-height: 100%;
+ 	font-size: 75%;
+}
+div.body{
+
+    font-size: 18px;
+}
+k{
+    color: #990000;
+	font-weight: bold;
+	font-size: 90%;
+}
+h1 {
+    font-size: 150%;
+    background-color: #b2c0ff;
+	padding: 10px;
+}
+
+h2 {
+    background-color: #9ed8ff;
+    font-size: 130%;
+}
+
+h3 {
+	background-color: #e6ccff;
+    font-size: 100%;
+}
+h4 {
+    background-color: #ccffcc;
+    font-size: 100%;
+	width: 95%;
+	border-radius: 5px;
+	padding: 2px;
+}
+h5 {
+    background-color: #d5ffb0;
+    font-size: 100%;
+
+}
+div.req{
+	background-color: #d9ffb3;
+    font-size: 18px;
+	width: 700px;
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}
+div.remark{
+	background-color: #E3F2FD;
+    border: 1.5px solid #d5f2ed;
+    padding: 15px;
+    margin: 10px;
+	border-radius: 25px;
+}
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+ol, ul, li {
+  margin: 0;
+  margin-left: 10px;
+  padding: 0;
+  padding-bottom: 5px;
+}
+
+table, th, td {
+	border: 1px solid black;
+}
+
+img {
+	border: 1.5px solid #d5f2ed
+
+}
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+}
+
+div.wrapdesc{
+	width: 90%;
+	margin: auto;
+}
+
+div.imagedesc{
+	width: 85%;
+	margin: auto;
+}
+</style>
+
+
+
+</head>
+
+
+
+
+  </head><body>
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="pingpongsystem24">
+<h1>PingPongSystem24<a class="headerlink" href="#pingpongsystem24" title="Permalink to this heading">¶</a></h1>
+<section id="introduction">
+<h2>Introduzione<a class="headerlink" href="#introduction" title="Permalink to this heading">¶</a></h2>
+<p>design e sviluppo di un sistema che simuli lo scambio di informazioni nello stile ping-pong</p>
+</section>
+<section id="requirements">
+<h2>Requisiti<a class="headerlink" href="#requirements" title="Permalink to this heading">¶</a></h2>
+<p>Creare un sistema distribuito che simuli come le informazioni vengono scambiate tra un giocatore ping e un giocatore pong, con un referee che faccia da osservatore e coordinatore della comunicazione</p>
+<p>Lo scopo non è quello di simulare il gioco, bensì di simulare l'interazione tra i componenti</p>
+</section>
+<section id="requirement-analysis">
+<h2>Analisi dei requisiti<a class="headerlink" href="#requirement-analysis" title="Permalink to this heading">¶</a></h2>
+<p>Nel gioco del ping pong sono presenti:</p>
+<ul class="simple">
+<li><p>Due giocatori, ovvero ping e pong</p></li>
+<li><p>Un arbitro (referee) che coordina e osserva la comunicazione</p></li>
+<li><p>Una palla (ball) che viene scambiata tra i giocatori</p></li>
+<li><p>Un mandante iniziale (definito come ping dal committente)</p></li>
+</ul>
+<section id="a-first-model-of-the-system">
+<h3>Un primo modello<a class="headerlink" href="#a-first-model-of-the-system" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Ping, pong e referee possono essere modellati come attori</p></li>
+<li><p>La palla può essere modellata come un messaggio, ma non si hanno abbastanza informazioni per capire se implementarla come:</p>
+<ul>
+<li><p>una dispatch</p></li>
+<li><p>una request</p></li>
+<li><p>un evento</p></li>
+</ul>
+</li>
+</ul>
+<p>Di conseguenza, una prima versione del modello non include scambi di messaggi.</p>
+<div class="highlight-default notranslate">
+<div class="highlight"><pre>
+System pingpong24
+
+Context ctxping  ip [host="localhost" port=8014]
+Context ctxpong  ip [host="127.0.0.1" port=8015]
+
+QActor ping context ctxping{
+    State s0 initial{
+        println("$name STARTS  ") color blue
+    }
+}
+
+QActor pong context ctxpong {
+    State s0 initial{
+        println("$name STARTS") color green
+    }
+}
+
+QActor referee context ctxping{
+    State s0 initial{
+        println("$name STARTS  ") color red
+    }
+}
+</pre></div>
+</div>
+</section>
+<section id="functional-test-plans-non-formal">
+<h3>Functional test plans (non formale)<a class="headerlink" href="#functional-test-plans-non-formal" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Il sistema funziona correttamente se la palla viene scambiata continuamente tra i giocatori</p></li>
+<li><p>Ciononostante, il sistema potrebbe non riuscire a terminare dopo un certo numero di scambi.</p></li>
+</ul>
+</section>
+</section>
+<section id="problem-analysis">
+<h2>Analisi del problema<a class="headerlink" href="#problem-analysis" title="Permalink to this heading">¶</a></h2>
+<p>Per capire con quale tipo di messaggio modellare la palla constatiamo che:</p>
+<ul class="simple">
+<li><p>un evento non sarebbe adatto a rappresentarla in quanto la palla viene scambiata tra due precisi endpoint</p></li>
+<li><p>una request non sarebbe adatta in quanto lo scopo di ciascu giocatore è di evitare di avere una risposta dall'altro giocatore</p></li>
+<li><p>una dispatch invece sembrerebbe più adatta</p></li>
+</ul>
+<p><span class="slidekp">Il problema della terminazione</span>.</p>
+<p>Per evitare che vi sia uno scambio infinito assumiamo che il sistema termini quando un giocatore non riceve la palla entro un lasso di tempo prefissato TMAX.</p>
+<section id="tmax">
+<h3>TMAX<a class="headerlink" href="#tmax" title="Permalink to this heading">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">val</span> <span class="n">TMAX</span> <span class="o">=</span> <span class="mi">1500</span>
+</pre></div>
+</div>
+<p>Questo permette di tener conto di diverse situazioni:</p>
+<ul class="simple">
+<li><p>un giocatore non è riuscito a ricevere la palla</p></li>
+<li><p>la palla viene persa, fuori dal campo</p></li>
+<li><p>la palla ha colpito la rete</p></li>
+<li><p>…</p></li>
+</ul>
+<p>Non ci occupiamo di chi vince il gioco in quanto lo scopo è unicamente quello di effettuare la comunicazione</p>
+</section>
+</section>
+<section id="logical-architecture">
+<h2>Architettura logica<a class="headerlink" href="#logical-architecture" title="Permalink to this heading">¶</a></h2>
+<p><span class="slide3">Project pingpong24</span></p>
+<section id="the-ping-pong-system">
+<h3>The ping-pong system<a class="headerlink" href="#the-ping-pong-system" title="Permalink to this heading">¶</a></h3>
+<div class="highlight-default notranslate">
+<div class="highlight"><pre>
+System pingpong24
+Dispatch ball : ball(N) "info exchanged"
+Dispatch ballview:ball(N)  "observed payload"
+
+Context ctxping  ip [host="localhost" port=8014]
+Context ctxpong  ip [host="127.0.0.1" port=8015]
+Context ctxreferee  ip [host="localhost" port=8016]
+
+QActor ping context ctxping { ... }
+QActor pong context ctxpong { ... }
+QActor referee context ctxreferee { ... }
+<p>Initially, it is wise, <span class="slide2">to set up the interaction logic</span>, by defining an executable model where
+both the players are <span class="slide2">in a single  context</span>.</p>
+System pingpong24
+Dispatch ball : ball(N) "info exchanged"
+Dispatch ballview:ball(N)  "observed payload"
+
+Context ctxtest  ip [host="localhost" port=8014]
+
+QActor ping context ctxtest { ... }
+QActor pong context ctxtest { ... }
+QActor referee context ctxtest { ... }
+</pre></div>
+</div>
+</section>
+<section id="ping">
+<h3>ping<a class="headerlink" href="#ping" title="Permalink to this heading">¶</a></h3>
+<table class="docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 70%" />
+</colgroup>
+<tbody>
+<tr>
+<td>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>QActor ping context ctxtest{
+    [#  var N = 1;  #]
+  State s0 initial{
+/*2*/delay 1000 //``pong`` started ...
+    println("$name sends $N  ") color blue
+  }
+  Transition t0 whenEvent startgame->startgamestate
+
+  State startgamestate{
+  	forward pong -m ball : ball($N)
+  }
+
+  Goto receive
+
+  State receive{
+    //println("$name received  ") color blue
+  }
+  Transition t0
+/*5*/whenMsg ball      -> reply
+	whenEvent stopgame -> endofexchange
+
+  State reply{
+    [# N = N + 1 #]
+    delay 500
+    println("$name sends $N  ") color blue
+    forward pong -m ball : ball($N)
+  }
+  Goto receive
+
+  State endofexchange{
+    println("$name ENDS ") color blue
+    [# System.exit(0) #]
+  }
+}
+</pre></div>
+</div>
+</td>
+<td><p><strong>ping</strong></p>
+<ol class="arabic simple">
+<li><p>Una volta ricevuto l'evento di startgame, inizia il gioco inviando la palla a pong</li>
+<li><p>Ricevuta la palla, la riinvia indietro</p></li>
+</ol>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="pong">
+<h3>pong<a class="headerlink" href="#pong" title="Permalink to this heading">¶</a></h3>
+<table class="docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 70%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><div class="highlight-default notranslate"><div class="highlight"><pre><span></span>QActor pong context ctxtest {
+  State s0 initial{
+    println("$name STARTS") color green
+  }
+  Transition t0
+/*2*/whenMsg ball     -> reply
+	whenEvent stopgame -> endofexchange
+
+  State reply{
+    onMsg( ball : ball(X)){
+     [# val N = payloadArg(0).toInt() #]
+     println("$name receives $N") color green
+     if [# N <= 4 #]{
+       delay 500
+  /*3*/forward ping -m ball : ball($N)
+    }//no forward if N == 5
+    }
+  }
+  Transition t0
+    whenMsg ball      -> reply
+	whenEvent stopgame -> endofexchange
+
+  State endofexchange{
+    println("$name ENDS ") color green
+	[# System.exit(0) #]
+  }
+}
+</pre></div>
+</div>
+</td>
+<td><p><strong>pong</strong></p>
+<ol class="arabic simple">
+<li><p>Quando viene ricevuta la palla viene riinviata se <span class="pre">N&lt;=4</span>
+</p>
+</li>
+</ol>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="referee">
+<h3>referee<a class="headerlink" href="#pong" title="Permalink to this heading">¶</a></h3>
+<table class="docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 70%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><div class="highlight-default notranslate"><div class="highlight"><pre><span></span>QActor referee context ctxtest {
+QActor referee context ctxtest{
+    [# var N = 0; val TOBSMAX=3000L #]
+  State s0 initial{
+    println("$name STARTS") color magenta
+/*1*/observeResource ping msgid ballview
+	observeResource pong msgid ballview
+	emit startgame: startgame(start)
+
+  }
+  Transition t0
+/*2*/whenTimeVar TOBSMAX -> gameended
+/*3*/whenMsg ballview -> updateinfoongame
+
+  State updateinfoongame{
+      onMsg( ballview :  ball(X) ){
+        [# N = payloadArg(0).toInt() #]
+      }
+  }
+  Transition t0
+    whenTimeVar TOBSMAX -> gameended
+    whenMsg ballview   -> updateinfoongame
+
+  State gameended{
+    println("$name waits for request") color magenta
+  }
+  Transition t0
+      /*5*/whenTime    2000 -> endgame
+
+	State endgame{
+		emit stopgame: stopgame(stop)
+		delay 2000
+		println("Game end") color red
+		[# System.exit(0) #]
+	}
+  }
+}
+</pre></div>
+</div>
+</td>
+<td><p><strong>pong</strong></p>
+<ol class="arabic simple">
+<li><p>Settare <a class="reference internal" href="#tmax"><span class="std std-ref">TOBSMAX</span></a> in modo tale da usarlo in fase di testing</p></li>
+<li><p>Il referee fa richiesta di diventare osservatore di ping e pong per osservare gli scambi, ed emette un evento per far iniziare la comunicazione</p></li>
+<li><p>Una volta raggiunto <a class="reference internal" href="#tmax"><span class="std std-ref">TOBSMAX</span></a> il referee emette un evento stopgame per comunicare la fine del gioco</p></li>
+<li><p>Fintantochè la palla viene ricevuta il gioco continua</p></li>
+</ol>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="test-plans">
+<h2>Test plans<a class="headerlink" href="#test-plans" title="Permalink to this heading">¶</a></h2>
+<p>Poniamo che:</p>
+<ul class="simple">
+<li><p>Il sistema funzioni correttamente se ping colpisce la palla per la quinta volta</p></li>
+</ul>
+<p>Per automatizzare il test, una testUnit dovrebbe:</p>
+<ol class="arabic simple">
+<li><p>attivare il sistema</p></li>
+<li><p>capire quando il sistema termina</p></li>
+<li><p>osservare lo stato di uno o più giocatori, ad esempio ping</p></li>
+</ol>
+<section id="a-testable-system">
+<h3>Un sistema testabile<a class="headerlink" href="#a-testable-system" title="Permalink to this heading">¶</a></h3>
+<p>Al fine di automatizzare il test si introducono i seguenti messaggi:</p>
+<table class="docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 60%" />
+<col style="width: 40%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><div class="highlight-default notranslate"><div class="highlight"><pre>
+System pingpong24
+
+Dispatch ball : ball(N) "info exchanged by the players"
+Dispatch ballview:ball(N)  "observed payload"
+
+//FOR TESTING
+Request info   : info(X)   "sent by testUnit to observer"
+Reply   obsinfo: obsinfo(X) for info
+</pre></div>
+</div>
+</td>
+<td><p><strong>sistema testabile</strong></p>
+<ul class="simple">
+<li><p><span class="blue">ballview</span>: usato per osservare lo stato del giocatore</p></li>
+<li><p><span class="blue">info</span>: usata per richiedere il risultato al referee</p></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+
+<p>Il referee andrà quindi modificato per rispondere alla test Unit</p>
+<table class="docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 60%" />
+<col style="width: 40%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><div class="highlight-default notranslate"><div class="highlight"><pre>
+QActor referee context ctxtest{
+    [# var N = 0; val TOBSMAX=3000L #]
+  State s0 initial{
+    println("$name STARTS") color magenta
+/*1*/observeResource ping msgid ballview
+	observeResource pong msgid ballview
+	emit startgame: startgame(start)
+
+  }
+  Transition t0
+/*2*/whenTimeVar TOBSMAX -> gameended
+/*3*/whenMsg ballview -> updateinfoongame
+
+  State updateinfoongame{
+      onMsg( ballview :  ball(X) ){
+        [# N = payloadArg(0).toInt() #]
+      }
+  }
+  Transition t0
+    whenTimeVar TOBSMAX -> gameended
+    whenMsg ballview   -> updateinfoongame
+
+  State gameended{
+    println("$name waits for request") color magenta
+  }
+  Transition t0
+      /*5*/whenTime    2000 -> endgame
+
+	State endgame{
+		emit stopgame: stopgame(stop)
+		delay 2000
+		println("Game end") color red
+	}
+
+	Transition t0
+      /*5*/whenTime    2000 -> endsystem
+/*6*/whenRequest info -> handleinfo
+
+  State handleinfo{
+    	replyTo info with obsinfo : obsinfo($N)
+/*7*/ 	[# System.exit(0) #]
+  }
+  State endsystem{
+  		[# System.exit(0) #]
+  }
+}
+</pre></div>
+</div>
+</td>
+<td>
+<ol class="simple">
+<li><p>una volta ricevuta una request info da parte della test unit, risponde con una response contenente il valore attuale di N</p></li>
+</ol>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="deployment">
+<h2>Deployment<a class="headerlink" href="#deployment" title="Permalink to this heading">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Eseguire <code class="docutils literal notranslate"><span class="pre">gradlew</span> <span class="pre">distZip</span></code></p></li>
+<li><p>Gradle genera: <code class="docutils literal notranslate"><span class="pre">pingpong24\build\distributions\pingpong24-1.0.zip</span></code></p></li>
+<li><p>Copia il file .zip in qualche directory (e.g. <code class="docutils literal notranslate"><span class="pre">C:/Iss24Run</span></code>)</p></li>
+<li><p>Fare l'unzip del file'</p></li>
+<li><p>Posizionarsi sulla directory <code class="docutils literal notranslate"><span class="pre">pingpong24-1.0\bin</span></code></p></li>
+<li><p>Eseguire uno dei seguenti scripts:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pingpong24.bat</span></code>   (in Windows)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pingpong24.sh</span></code>    (in Unix)</p></li>
+</ul>
+</li>
+</ol>
+<section id="testunit">
+<h3>testUnit<a class="headerlink" href="#testunit" title="Permalink to this heading">¶</a></h3>
+<p>Una Unit Test viene riportata in <a class="reference external" href="src/main/java/test/TestPingPong24SingleCtx.java">TestPingPong24SingleCtx</a></p>
+<p>Ci sono due modi per avviare il sistema:</p>
+<ul>
+<li><p><span class="slide2">activateSystemUsingGradle</span>: attiva il sistema da testare eseguendo</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Process</span> <span class="n">p</span> <span class="o">=</span> <span class="n">Runtime</span><span class="o">.</span><span class="n">getRuntime</span><span class="p">()</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="s2">&quot;./gradlew.bat runAll&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p><span class="slide2">activateSystemUsingDeploy</span>: attiva il sistema da testare eseguendo</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Process</span> <span class="n">p</span> <span class="o">=</span> <span class="n">Runtime</span><span class="o">.</span><span class="n">getRuntime</span><span class="p">()</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="s2">&quot;./src/main/java/test/pingpongexec.bat&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>dove ``pingpongexec.bat`` è legato a quanto fatto nel <a class="reference internal" href="#deployment"><span class="std std-ref"> Deployment</span></a> :</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">C</span><span class="p">:</span><span class="o">/</span><span class="n">iss24Run</span><span class="o">/</span><span class="n">pingpong24</span><span class="o">-</span><span class="mf">1.0</span><span class="o">/</span><span class="nb">bin</span>
+<span class="n">pingpong24</span><span class="o">.</span><span class="n">bat</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+</section>
+</section>
+          </div>
+        </div>
+      </div>
+
+  </body>
+</html>

@@ -25,7 +25,7 @@ class Otherobserver ( name: String, scope: CoroutineScope, isconfined: Boolean=f
 				state("s0") { //this:State
 					action { //it:State
 						CommUtils.outblue("$name STARTS")
-						CoapObserverSupport(myself, "130.136.113.63","8015","ctxconsumer","consumer","short")
+						observeResource("130.136.113.63","8015","ctxconsumer","consumer","short")
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002

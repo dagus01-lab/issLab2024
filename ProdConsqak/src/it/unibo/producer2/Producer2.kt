@@ -24,22 +24,13 @@ class Producer2 ( name: String, scope: CoroutineScope, isconfined: Boolean=false
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
-						CommUtils.outblue("$name STARTS")
-						delay(500) 
-						request("distance", "distance(50)" ,"consumer" )  
-						//genTimer( actor, state )
-					}
-					//After Lenzi Aug2002
-					sysaction { //it:State
-					}	 	 
-					 transition(edgeName="t00",targetState="handleAnswer",cond=whenReply("distanceack"))
-				}	 
-				state("handleAnswer") { //this:State
-					action { //it:State
-						CommUtils.outblue("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
+						CommUtils.outmagenta("Hello world 01")
+						 CommUtils.outblue("Hello world again")  
+						CommUtils.outcyan("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
 						 	   
-						delay(2000) 
-						 System.exit(0)  
+						forward("msgFd", "msgFd(20)" ,"consumer" ) 
+						forward("msgFd", "msgFd(40)" ,"consumer" ) 
+						request("msgRq", "msgRq(60)" ,"consumer" )  
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002

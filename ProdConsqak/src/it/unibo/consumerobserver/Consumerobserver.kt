@@ -25,8 +25,8 @@ class Consumerobserver ( name: String, scope: CoroutineScope, isconfined: Boolea
 				state("s0") { //this:State
 					action { //it:State
 						CommUtils.outblue("$name STARTS")
-						CoapObserverSupport(myself, "localhost","8015","ctxconsumer","consumer","info")
-						CoapObserverSupport(myself, "localhost","8015","ctxconsumer","consumer","short")
+						observeResource("localhost","8015","ctxconsumer","consumer","info")
+						observeResource("localhost","8015","ctxconsumer","consumer","short")
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002

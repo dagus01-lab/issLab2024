@@ -7,7 +7,6 @@ Context ctxpingpong ip [host="localhost" port=8000]
 QActor a context ctxpingpong {
 	State s0 initial{
 		println("A") color magenta
-		printCurrentMessage
 		forward b -m msg : msg(0)
 	}
 	Transition t0 whenMsg msg -> handleMsg
@@ -25,7 +24,6 @@ QActor a context ctxpingpong {
 QActor b context ctxpingpong {
 	State s0 initial{
 		println("B") color yellow
-		printCurrentMessage
 	}
 	Transition t0 whenMsg msg -> handleMsg
 	State handleMsg {
