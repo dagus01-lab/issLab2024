@@ -1,0 +1,6 @@
+{"actor":"sonar", "msgType":"dispatch", "curstate":"s0", "nextstate":"handle_sonar_start", "msgId":"sonarstart"}
+{"actor":"sonar", "msgType":"dispatch", "curstate":"s0", "nextstate":"handle_sonar_stop", "msgId":"sonarstop"}
+{"actor":"sonar", "msgType":"dispatch", "curstate":"handle_sonar_start", "nextstate":"handle_sonar_start", "msgId":"sonarstart"}
+{"actor":"sonar", "msgType":"dispatch", "curstate":"handle_sonar_start", "nextstate":"handle_sonar_stop", "msgId":"sonarstop"}
+{"actor":"sonar", "msgType":"dispatch", "curstate":"handle_sonar_stop", "nextstate":"handle_sonar_start", "msgId":"sonarstart"}
+{"actor":"sonar", "msgType":"dispatch", "curstate":"handle_sonar_stop", "nextstate":"handle_sonar_stop", "msgId":"sonarstop"}

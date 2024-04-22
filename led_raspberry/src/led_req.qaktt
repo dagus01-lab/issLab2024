@@ -1,0 +1,15 @@
+System ledqak
+
+Context ctxled ip [host="localhost" port=8001]
+
+QActor led context ctxled{
+	State s0 initial{
+		println("$name started") color magenta
+	}
+} 
+
+QActor ledusage context ctxled{
+	State s0 initial{
+		println("$name started") color blue
+	}
+} 

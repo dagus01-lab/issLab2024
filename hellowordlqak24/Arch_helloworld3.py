@@ -24,5 +24,7 @@ with Diagram('helloworld3Arch', show=False, outformat='png', graph_attr=graphatt
      with Cluster('ctxhello', graph_attr=nodeattr):
           display=Custom('display','./qakicons/symActorSmall.png')
           worker=Custom('worker','./qakicons/symActorSmall.png')
+     facadesmathasynch=Custom('facadesmathasynch','./qakicons/server.png')
+     facadesmathasynch >> Edge(color='blue', style='solid', decorate='true', label='< &harr; >',  fontcolor='blue') >> smathasynchfacade
      worker >> Edge(color='blue', style='solid',  decorate='true', label='<out &nbsp; >',  fontcolor='blue') >> display
 diag

@@ -1,0 +1,39 @@
+System sonarqak
+
+Dispatch sonarstart : sonarstart(X)
+Dispatch sonarstop  : sonarstop(X)
+Event distance: distance(D)
+Context ctxsonar ip [host="localhost" port=8001]
+
+CodedQActor dataCleaner context ctxsonar className "codedActor.workactor"
+CodedQActor distanceFilter context ctxsonar className "codedActor.workactor"
+
+QActor sonar context ctxsonar{
+	State s0 initial{
+		println("$name started") color magenta
+	}
+	Transition t0 whenMsg sonarstart -> handle_sonar_start
+				whenMsg sonarstop-> handle_sonar_stop
+	State handle_sonar_start {
+		println("sonar on") color magenta
+		[# Runtime.getRuntime().exec("python3 sonar.py") #]
+	}
+	Transition t0 whenMsg sonarstart -> handle_sonar_start
+				whenMsg sonarstop-> handle_sonar_stop
+	State handle_sonar_stop {
+		println("sonar off") color magenta
+		[# Runtime.getRuntime().exec("kill -9 `ps axu | grep sonar.py | awk '{print $2}' | head -1") #]
+	}
+	Transition t0 whenMsg sonarstart -> handle_sonar_start
+				whenMsg sonarstop-> handle_sonar_stop
+} 
+
+QActor sonarusage context ctxsonar{
+	State s0 initial{
+		println("$name started") color blue
+		forward sonar -m sonarstart : sonarstart(0)
+		delay 3000
+		forward sonar -m sonarstop : sonarstop(0)
+		delay 3000
+	}
+} 

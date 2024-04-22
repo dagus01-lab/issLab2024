@@ -1,0 +1,15 @@
+System sonarqak
+
+Context ctxsonar ip [host="localhost" port=8001]
+
+QActor sonar context ctxsonar{
+	State s0 initial{
+		println("$name started") color magenta
+	}
+} 
+
+QActor sonarusage context ctxsonar{
+	State s0 initial{
+		println("$name started") color blue
+	}
+} 
