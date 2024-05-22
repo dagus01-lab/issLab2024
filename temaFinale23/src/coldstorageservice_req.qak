@@ -1,0 +1,33 @@
+System coldstorageservice
+
+Context ctxroom ip [host="localhost" port=8088]
+
+QActor coldstorageservice context ctxroom{	
+	[#
+		val RD = 5
+		val MAXW = 50
+		val curWeight = 0
+		val lr = 100
+		val lf = 100
+		val INDOOR = 20
+		val HOME = 30
+		val PORT = 15
+		val cr_x0 = 40
+		val cr_y = 40
+		val cr_h = 10
+		val PORT = 20
+		
+		val indoorCoordinates = [0,lf,INDOOR,lf]
+		val coldRoomCoordinates = [cr_x0,cr_y,cr_x0+PORT,cr_y+cr_h]
+		val homeCoordinates = [0,0,HOME,RD]
+	#]
+	State s0 initial{
+		println("$name STARTS") color blue
+	}	
+} 
+
+QActor drivermock context ctxroom {
+	State s0 initial{
+		println("$name STARTS") color red
+	}
+}

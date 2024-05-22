@@ -22,9 +22,9 @@ with Diagram('sonarqakArch', show=False, outformat='png', graph_attr=graphattr) 
      sys = Custom('','./qakicons/system.png')
 ### see https://renenyffenegger.ch/notes/tools/Graphviz/attributes/label/HTML-like/index
      with Cluster('ctxsonar', graph_attr=nodeattr):
-          sonar=Custom('sonar','./qakicons/symActorSmall.png')
+          sonar24=Custom('sonar24','./qakicons/symActorSmall.png')
+          sonardevice=Custom('sonardevice','./qakicons/symActorSmall.png')
           sonarusage=Custom('sonarusage','./qakicons/symActorSmall.png')
-          dataCleaner=Custom('dataCleaner(coded)','./qakicons/codedQActor.png')
-          distanceFilter=Custom('distanceFilter(coded)','./qakicons/codedQActor.png')
-     sonarusage >> Edge(color='blue', style='solid',  decorate='true', label='<sonarstart &nbsp; sonarstop &nbsp; >',  fontcolor='blue') >> sonar
+     facadesmathasynch=Custom('facadesmathasynch','./qakicons/server.png')
+     facadesmathasynch >> Edge(color='blue', style='solid', decorate='true', label='< &harr; >',  fontcolor='blue') >> smathasynchfacade
 diag

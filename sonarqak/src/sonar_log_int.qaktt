@@ -19,7 +19,7 @@ QActor sonar context ctxsonar{
 				whenMsg sonarstop-> handle_sonar_stop
 	State handle_sonar_stop {
 		println("sonar off") color magenta
-		[# Runtime.getRuntime().exec("kill -9 `ps axu | grep sonar.py | awk '{print $2}' | head -1") #]
+		[# Runtime.getRuntime().exec("kill -9 `ps axu | grep 'python3 sonar.py' | awk '{print $2}' | head -1") #]
 	}
 	Transition t0 whenMsg sonarstart -> handle_sonar_start
 				whenMsg sonarstop-> handle_sonar_stop

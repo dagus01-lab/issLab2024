@@ -1,4 +1,4 @@
-technology-dependent su Rapberry Pi che permetta di interagire con un led<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
     <!--
@@ -279,7 +279,7 @@ I messaggi atti all'accensione e allo spegnimento del sonar possono essere model
 </ul>
 L'attore sonar invece può inviare i messaggi sulla distanza come event per motivi di modularità ed estendibilità. Infatti, non serve sapere i destinatari del messaggio. Sarebbe comunque comodo modellare la comunicazione della distanza con un localstream, per fare in modo che gli attori interessati a leggere le distanze si iscrivano e che possano ricevere l'evento.
 <h4>Interazione logica</h4>
-Il modello viene riportato nel file <a href="../src/sonar_log_int.qak">led_log_int.qak</a>. Si noti come in una prima fase di testing gli attori vengono messi nello stesso contesto.
+Il modello viene riportato nel file <a href="../src/sonar_log_int.qak">sonar_log_int.qak</a>. Si noti come in una prima fase di testing gli attori vengono messi nello stesso contesto.
 </div>
 
 <div class="remark">
@@ -289,7 +289,13 @@ Il modello viene riportato nel file <a href="../src/sonar_log_int.qak">led_log_i
 
 <div class="remark">
 <h2>Project</h2> 
-Per effettuare il filtraggio dei valori di distanza interessati si potrebbe far uso di un CodedQactor. Si può fare lo stesso per escludere i valori spuri catturati dal sonar.
+Un filtraggio più accurato dei valori di distanza può essere ottenuto costruendo una pipe di attori che ha sonardevice come sorgente-dati e un componente dataCleaner che provvede a eliminare dati spuri.
+
+Si intende sviluppare, incapsulare, lo script sonar.py nel sonardevice e usarlo.
+
+
+Il modello della progettazione viene riportato nel file <a href="../src/sonar_proj.qak">sonar_proj.qak</a>
+
 </div>
 
 <div class="remark">

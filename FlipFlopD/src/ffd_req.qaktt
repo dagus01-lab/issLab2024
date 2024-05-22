@@ -1,0 +1,15 @@
+System ffd
+
+Context ctxffd ip [host="localhost" port=8088]
+
+QActor ffdcircuit context ctxffd{
+	State s0 initial{
+		println("$name STARTS") color yellow
+	}
+}
+
+QActor clientmock context ctxffd{
+	State s0 initial{
+		println("$name STARTS") color red
+	}
+}

@@ -3,14 +3,13 @@
 %====================================================================================
 dispatch( sonarstart, sonarstart(X) ).
 dispatch( sonarstop, sonarstop(X) ).
+dispatch( doread, doread(X) ).
 event( distance, distance(D) ).
 %====================================================================================
 context(ctxsonar, "localhost",  "TCP", "8001").
- qactor( datacleaner, ctxsonar, "codedActor.workactor").
- static(datacleaner).
-  qactor( distancefilter, ctxsonar, "codedActor.workactor").
- static(distancefilter).
-  qactor( sonar, ctxsonar, "it.unibo.sonar.Sonar").
- static(sonar).
+ qactor( sonar24, ctxsonar, "it.unibo.sonar24.Sonar24").
+ static(sonar24).
+  qactor( sonardevice, ctxsonar, "it.unibo.sonardevice.Sonardevice").
+ static(sonardevice).
   qactor( sonarusage, ctxsonar, "it.unibo.sonarusage.Sonarusage").
  static(sonarusage).

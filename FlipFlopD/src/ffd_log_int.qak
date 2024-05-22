@@ -1,0 +1,212 @@
+System ffd
+
+Dispatch oni1:oni1(N)
+Dispatch oni2:oni2(N)
+Dispatch offi1:offi1(N)
+Dispatch offi2:offi2(N)
+Dispatch set1:set1(N)
+Dispatch set0:set0(N)
+Dispatch reset1:reset1(N)
+Dispatch reset0:reset0(N)
+Event output:output(N)
+
+Context ctxffd ip [host="localhost" port=8080]
+
+QActor norset context ctxffd{
+	[#
+		var i1=false
+		var i2=false
+		var RES = !(i1 || i2)	
+	#]
+	State s0 initial{
+		println("$name STARTS") color blue
+	}
+	Transition t0 whenMsg oni1 -> handleoni1
+				  whenMsg oni2 -> handleoni2
+				  whenMsg offi1 -> handleoffi1
+				  whenMsg offi2 -> handleoffi2
+	State set{
+		
+	}
+	Transition t0 whenTime 1000 -> updateoutput
+				  whenMsg oni1 -> handleoni1
+				  whenMsg oni2 -> handleoni2
+				  whenMsg offi1 -> handleoffi1
+				  whenMsg offi2 -> handleoffi2
+	
+	State handleoni1 {
+		[#
+		i1=true
+		RES = !(i1 || i2)	
+		#]
+		
+	}
+	Goto set
+	State handleoffi1 {
+		[#
+		i1=false
+		RES = !(i1 || i2)	
+		#]
+	}
+	Goto set
+	State handleoni2 {
+		[#
+		i2=true
+		RES = !(i1 || i2)	
+		#]
+	}
+	Goto set
+	State handleoffi2 {
+		[#
+		i2=false
+		RES = !(i1 || i2)	
+		#]
+	}
+	Goto set
+	State updateoutput{
+		println("Ingressi Nor Set: $i1 $i2")
+		if[# RES #]{
+			forward norreset -m oni2:oni2(1)	
+		}
+		else{
+			forward norreset -m offi2:offi2(1)
+		}
+		
+	}
+	Goto set
+}
+
+QActor norreset context ctxffd{
+	[#
+		var i1=false
+		var i2=false
+		var RES = !(i1 || i2)	
+	#]
+	State s0 initial{
+		println("$name STARTS") color blue
+	}
+	Transition t0 whenMsg oni1 -> handleoni1
+				  whenMsg oni2 -> handleoni2
+				  whenMsg offi1 -> handleoffi1
+				  whenMsg offi2 -> handleoffi2
+	State set{
+		
+	}
+	Transition t0 whenTime 1000 -> emitoutput
+				  whenMsg oni1 -> handleoni1
+				  whenMsg oni2 -> handleoni2
+				  whenMsg offi1 -> handleoffi1
+				  whenMsg offi2 -> handleoffi2
+	
+	State handleoni1 {
+		[#
+		i1=true
+		RES = !(i1 || i2)	
+		#]
+		
+	}
+	Goto set
+	State handleoffi1 {
+		[#
+		i1=false
+		RES = !(i1 || i2)	
+		#]
+	}
+	Goto set
+	State handleoni2 {
+		[#
+		i2=true
+		RES = !(i1 || i2)	
+		#]
+	}
+	Goto set
+	State handleoffi2 {
+		[#
+		i2=false
+		RES = !(i1 || i2)	
+		#]
+	}
+	Goto set
+	State emitoutput{
+		println("Ingressi Nor Reset: $i1 $i2")
+		emit output:output($RES)
+		if [# RES #]{
+			forward norset -m oni1:oni1(1)
+		}
+		else{
+			forward norset -m offi1:offi1(1)
+		}
+			
+	}
+	Goto set
+}
+
+QActor ffdcircuit context ctxffd{
+	State s0 initial{
+		println("$name STARTS") color yellow
+	}
+	Transition t0 whenMsg set1 -> handleset1
+				whenMsg reset1 -> handlereset1
+				whenMsg set0 -> handleset0
+				whenMsg reset0 -> handlereset0
+	State handleset1{
+		println("set S=1") color green
+		forward norset -m oni2:oni2(1)
+	}
+	Transition t0 whenMsg set1 -> handleset1
+				whenMsg reset1 -> handlereset1
+				whenMsg set0 -> handleset0
+				whenMsg reset0 -> handlereset0
+	State handlereset1{
+		println("set R=1") color green
+		forward norreset -m oni1:oni1(1)
+	}
+	Transition t0 whenMsg set1 -> handleset1
+				whenMsg reset1 -> handlereset1
+				whenMsg set0 -> handleset0
+				whenMsg reset0 -> handlereset0
+	State handleset0{
+		println("set S=0") color green
+		forward norset -m offi2:offi2(1)
+	}
+	Transition t0 whenMsg set1 -> handleset1
+				whenMsg reset1 -> handlereset1
+				whenMsg set0 -> handleset0
+				whenMsg reset0 -> handlereset0
+	State handlereset0{
+		println("set R=0") color green
+		forward norreset -m offi1:offi1(1)
+	}
+	Transition t0 whenMsg set1 -> handleset1
+				whenMsg reset1 -> handlereset1
+				whenMsg set0 -> handleset0
+				whenMsg reset0 -> handlereset0
+}
+QActor observer context ctxffd{
+	State s0 initial{ 
+		println("$name STARTS")
+	}
+	Transition t0 whenEvent output->handleoutput
+	
+	State handleoutput{
+		onMsg(output:output(N)){
+			[#val result = payloadArg(0)#]
+			println("Output: $result") color blue
+		}
+	}
+	Transition t0 whenEvent output->handleoutput
+}
+
+QActor clientmock context ctxffd{
+	State s0 initial{
+		println("$name STARTS") color red
+		forward ffdcircuit -m set1:set1(1)
+		delay 5000
+		forward ffdcircuit -m set0:set0(1)
+		delay 5000
+		forward ffdcircuit -m reset1:reset1(1)
+		delay 5000
+		forward ffdcircuit -m reset0:reset0(1)
+		delay 5000
+	}
+}

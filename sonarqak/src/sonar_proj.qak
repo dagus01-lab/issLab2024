@@ -2,17 +2,99 @@ System sonarqak
 
 Dispatch sonarstart : sonarstart(X)
 Dispatch sonarstop  : sonarstop(X)
+Dispatch doread : doread(X)
 Event distance: distance(D)
+Dispatch pause: pause(K)
 Context ctxsonar ip [host="localhost" port=8001]
+Context ctxrobotcleaner ip [host="130.136.113.133" port=8032]
 
-CodedQActor dataCleaner context ctxsonar className "codedActor.workactor"
-CodedQActor distanceFilter context ctxsonar className "codedActor.workactor"
+QActor robotcleaner context ctxrobotcleaner{
+	State s0 initial{
+		println("$name started") color blue
+	}
+}
 
-QActor sonar context ctxsonar{
+QActor sonar24 context ctxsonar{
 	State s0 initial{
 		println("$name started") color magenta
 	}
+	/*Transition t0 whenMsg sonarstart -> handle_sonar_start
+				whenMsg sonarstop-> handle_sonar_stop
+	State handle_sonar_start {
+		println("sonar on") color magenta
+		forward sonardevice -m sonarstart : sonarstart(0)
+	}
 	Transition t0 whenMsg sonarstart -> handle_sonar_start
+				whenMsg sonarstop-> handle_sonar_stop
+	State handle_sonar_stop {
+		println("sonar off") color magenta
+		forward sonardevice -m sonarstop : sonarstop(0)
+	}
+	Transition t0 whenMsg sonarstart -> handle_sonar_start
+				whenMsg sonarstop-> handle_sonar_stop*/
+} 
+QActor sonardevice context ctxsonar{
+	[# 
+	lateinit var reader : java.io.BufferedReader
+	var working = false
+    lateinit var p : Process	
+    var Distance = 0
+	#]	
+	State s0 initial{
+		println("$name started") color red
+	}
+	Goto startTheSonar
+ 	
+	State startTheSonar{
+	[#
+    	working = true		
+		p       = Runtime.getRuntime().exec("python sonar.py")
+		reader  = java.io.BufferedReader(  java.io.InputStreamReader(p.getInputStream() ))	
+	#]		
+	}
+	
+	Goto readSonarData
+	
+	State readSonarData{
+		[# 
+		var data = reader.readLine()
+		CommUtils.outyellow("$name with python: data = $data"   ) 
+		if( data != null ){
+			try{ 
+				val vd = data.toFloat()
+				val v  = vd.toInt()
+				if( v <= 100 ){	//A first filter ...
+					Distance = v				
+				}else Distance = 0
+			}catch(e: Exception){
+					CommUtils.outred("$name readSonarDataERROR: $e "   )
+			}
+		}//if
+		#]
+		if [# Distance > 12 #] { 
+		    println("$name with python: data = $data"   ) color yellow
+			emitlocalstream distance : distance($Distance)
+			forward robotcleaner -m pause: pause(K)
+			//emit  sonardata : distance($Distance)
+		}
+		autodispatch doread : doread(1)
+	}
+	Transition t0 
+ 		whenMsg doread and [# working   #]   -> readSonarData 
+		whenMsg doread and [# ! working #] -> endOfRead
+		
+	State endOfRead{
+		[#
+			
+   	    p.destroy()
+    	if (p.isAlive()) {
+    	    p.destroyForcibly();
+    	}
+       	CommUtils.outred("$tt $name | endOfRead"  )
+			
+		#]
+	}
+	/*Transition t0 whenMsg sonarstart -> handle_sonar_start
 				whenMsg sonarstop-> handle_sonar_stop
 	State handle_sonar_start {
 		println("sonar on") color magenta
@@ -25,15 +107,16 @@ QActor sonar context ctxsonar{
 		[# Runtime.getRuntime().exec("kill -9 `ps axu | grep sonar.py | awk '{print $2}' | head -1") #]
 	}
 	Transition t0 whenMsg sonarstart -> handle_sonar_start
-				whenMsg sonarstop-> handle_sonar_stop
-} 
+				whenMsg sonarstop-> handle_sonar_stop*/
+	
+}
 
 QActor sonarusage context ctxsonar{
 	State s0 initial{
 		println("$name started") color blue
-		forward sonar -m sonarstart : sonarstart(0)
+		/*forward sonar24 -m sonarstart : sonarstart(0)
 		delay 3000
-		forward sonar -m sonarstop : sonarstop(0)
-		delay 3000
+		forward sonar24 -m sonarstop : sonarstop(0)
+		delay 3000*/
 	}
 } 
