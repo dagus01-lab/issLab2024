@@ -17,6 +17,10 @@ eventedgeattr = {
     'color': 'red',
     'style': 'dotted'
 }
+evattr = {
+    'color': 'darkgreen',
+    'style': 'dotted'
+}
 with Diagram('ffdArch', show=False, outformat='png', graph_attr=graphattr) as diag:
   with Cluster('env'):
      sys = Custom('','./qakicons/system.png')
@@ -28,6 +32,7 @@ with Diagram('ffdArch', show=False, outformat='png', graph_attr=graphattr) as di
           observer=Custom('observer','./qakicons/symActorSmall.png')
           clientmock=Custom('clientmock','./qakicons/symActorSmall.png')
      norreset >> Edge( label='output', **eventedgeattr, decorate='true', fontcolor='red') >> sys
+     sys >> Edge( label='output', **evattr, decorate='true', fontcolor='darkgreen') >> observer
      clientmock >> Edge(color='blue', style='solid',  decorate='true', label='<set1 &nbsp; set0 &nbsp; reset1 &nbsp; reset0 &nbsp; >',  fontcolor='blue') >> ffdcircuit
      ffdcircuit >> Edge(color='blue', style='solid',  decorate='true', label='<oni2 &nbsp; offi2 &nbsp; >',  fontcolor='blue') >> norset
      ffdcircuit >> Edge(color='blue', style='solid',  decorate='true', label='<oni1 &nbsp; offi1 &nbsp; >',  fontcolor='blue') >> norreset

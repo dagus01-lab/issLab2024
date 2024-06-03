@@ -17,12 +17,14 @@ eventedgeattr = {
     'color': 'red',
     'style': 'dotted'
 }
+evattr = {
+    'color': 'darkgreen',
+    'style': 'dotted'
+}
 with Diagram('mapbuildArch', show=False, outformat='png', graph_attr=graphattr) as diag:
   with Cluster('env'):
      sys = Custom('','./qakicons/system.png')
 ### see https://renenyffenegger.ch/notes/tools/Graphviz/attributes/label/HTML-like/index
      with Cluster('ctxmapbuild', graph_attr=nodeattr):
           mapbuilder=Custom('mapbuilder','./qakicons/symActorWithobjSmall.png')
-     facadesmathasynch=Custom('facadesmathasynch','./qakicons/server.png')
-     facadesmathasynch >> Edge(color='blue', style='solid', decorate='true', label='< &harr; >',  fontcolor='blue') >> smathasynchfacade
 diag

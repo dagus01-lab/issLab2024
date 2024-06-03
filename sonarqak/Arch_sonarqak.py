@@ -17,6 +17,10 @@ eventedgeattr = {
     'color': 'red',
     'style': 'dotted'
 }
+evattr = {
+    'color': 'darkgreen',
+    'style': 'dotted'
+}
 with Diagram('sonarqakArch', show=False, outformat='png', graph_attr=graphattr) as diag:
   with Cluster('env'):
      sys = Custom('','./qakicons/system.png')
@@ -25,6 +29,4 @@ with Diagram('sonarqakArch', show=False, outformat='png', graph_attr=graphattr) 
           sonar24=Custom('sonar24','./qakicons/symActorSmall.png')
           sonardevice=Custom('sonardevice','./qakicons/symActorSmall.png')
           sonarusage=Custom('sonarusage','./qakicons/symActorSmall.png')
-     facadesmathasynch=Custom('facadesmathasynch','./qakicons/server.png')
-     facadesmathasynch >> Edge(color='blue', style='solid', decorate='true', label='< &harr; >',  fontcolor='blue') >> smathasynchfacade
 diag

@@ -17,6 +17,10 @@ eventedgeattr = {
     'color': 'red',
     'style': 'dotted'
 }
+evattr = {
+    'color': 'darkgreen',
+    'style': 'dotted'
+}
 with Diagram('ledqakArch', show=False, outformat='png', graph_attr=graphattr) as diag:
   with Cluster('env'):
      sys = Custom('','./qakicons/system.png')
@@ -24,7 +28,5 @@ with Diagram('ledqakArch', show=False, outformat='png', graph_attr=graphattr) as
      with Cluster('ctxled', graph_attr=nodeattr):
           led=Custom('led','./qakicons/symActorSmall.png')
           ledusage=Custom('ledusage','./qakicons/symActorSmall.png')
-     facadesmathasynch=Custom('facadesmathasynch','./qakicons/server.png')
-     facadesmathasynch >> Edge(color='blue', style='solid', decorate='true', label='< &harr; >',  fontcolor='blue') >> smathasynchfacade
      ledusage >> Edge(color='blue', style='solid',  decorate='true', label='<led_on &nbsp; led_off &nbsp; >',  fontcolor='blue') >> led
 diag

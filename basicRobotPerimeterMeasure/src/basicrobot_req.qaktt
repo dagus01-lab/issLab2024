@@ -1,0 +1,35 @@
+/*
+ * ================================================================================
+ * unibo.basicrobot24
+ * ================================================================================
+ */
+
+System /* -trace -msglog  */ basicrobot24
+
+
+Context ctxbasicrobot ip [host="localhost" port=8020]
+
+/*
+ * ------------------------------
+ * basicrobot
+ * ------------------------------
+ */
+QActor basicrobot context ctxbasicrobot{
+	State ss0 initial{
+		println("$name started")
+	}
+}
+
+
+/*
+ * ------------------------------
+ * basicrobotusage (tester)
+ * ------------------------------
+ */
+
+QActor basicrobotusage context ctxbasicrobot{
+	State ss0 initial { 	
+		println("$name started")
+	}
+
+}

@@ -17,6 +17,10 @@ eventedgeattr = {
     'color': 'red',
     'style': 'dotted'
 }
+evattr = {
+    'color': 'darkgreen',
+    'style': 'dotted'
+}
 with Diagram('wolfdetlogarchArch', show=False, outformat='png', graph_attr=graphattr) as diag:
   with Cluster('env'):
      sys = Custom('','./qakicons/system.png')
@@ -29,11 +33,9 @@ with Diagram('wolfdetlogarchArch', show=False, outformat='png', graph_attr=graph
           wolfdetector=Custom('wolfdetector','./qakicons/symActorSmall.png')
           sonarmock=Custom('sonarmock','./qakicons/symActorSmall.png')
           imagesender=Custom('imagesender','./qakicons/symActorSmall.png')
-     facadesmathasynch=Custom('facadesmathasynch','./qakicons/server.png')
      sonarmock >> Edge( label='obstacle', **eventedgeattr, decorate='true', fontcolor='red') >> wolfdetector
      wolfdetector >> Edge(color='magenta', style='solid', decorate='true', label='<detectWolf<font color="darkgreen"> iswolf</font> &nbsp; >',  fontcolor='magenta') >> imagesender
      wolfdetector >> Edge(color='magenta', style='solid', decorate='true', label='<takePhoto<font color="darkgreen"> photo</font> &nbsp; >',  fontcolor='magenta') >> camera
-     facadesmathasynch >> Edge(color='blue', style='solid', decorate='true', label='< &harr; >',  fontcolor='blue') >> smathasynchfacade
      wolfdetector >> Edge(color='blue', style='solid',  decorate='true', label='<ledCmd &nbsp; >',  fontcolor='blue') >> ledred
      station >> Edge(color='blue', style='solid',  decorate='true', label='<startsonar &nbsp; >',  fontcolor='blue') >> wolfdetector
      wolfdetector >> Edge(color='blue', style='solid',  decorate='true', label='<ledCmd &nbsp; >',  fontcolor='blue') >> ledblu

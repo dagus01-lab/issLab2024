@@ -23,6 +23,8 @@ class Coldstorageservice ( name: String, scope: CoroutineScope, isconfined: Bool
 		//val interruptedStateTransitions = mutableListOf<Transition>()
 		
 				val RD = 5
+				val MAXW = 50
+				val curWeight = 0
 				val lr = 100
 				val lf = 100
 				val INDOOR = 20
@@ -45,34 +47,6 @@ class Coldstorageservice ( name: String, scope: CoroutineScope, isconfined: Bool
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition(edgeName="t00",targetState="handleStoreRequest",cond=whenRequest("store"))
-					transition(edgeName="t01",targetState="handleLoadRequest",cond=whenRequest("load"))
-				}	 
-				state("handleStoreRequest") { //this:State
-					action { //it:State
-						CommUtils.outcyan("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
-						 	   
-						answer("store", "storeAccepted", "storeAccepted(1)"   )  
-						//genTimer( actor, state )
-					}
-					//After Lenzi Aug2002
-					sysaction { //it:State
-					}	 	 
-					 transition(edgeName="t02",targetState="handleStoreRequest",cond=whenRequest("store"))
-					transition(edgeName="t03",targetState="handleLoadRequest",cond=whenRequest("load"))
-				}	 
-				state("handleLoadRequest") { //this:State
-					action { //it:State
-						CommUtils.outcyan("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
-						 	   
-						answer("load", "loadAccepted", "loadAccepted(1)"   )  
-						//genTimer( actor, state )
-					}
-					//After Lenzi Aug2002
-					sysaction { //it:State
-					}	 	 
-					 transition(edgeName="t04",targetState="handleStoreRequest",cond=whenRequest("store"))
-					transition(edgeName="t05",targetState="handleLoadRequest",cond=whenRequest("load"))
 				}	 
 			}
 		}

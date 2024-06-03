@@ -15,7 +15,6 @@ import it.unibo.kactor.sysUtil.createActor   //Sept2023
 //User imports JAN2024
 import main.resources.robotvirtual.VrobotLLMoves24
 import main.resources.map.RoomMap
-import main.resources.map.RobotDir
 
 class Mapbuilder ( name: String, scope: CoroutineScope, isconfined: Boolean=false  ) : ActorBasicFsm( name, scope, confined=isconfined ){
 
@@ -25,105 +24,82 @@ class Mapbuilder ( name: String, scope: CoroutineScope, isconfined: Boolean=fals
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
 		//val interruptedStateTransitions = mutableListOf<Transition>()
 		 val vr = VrobotLLMoves24.create("localhost",myself)
-		 
-			   
-			   var CurPlan = ""
-			   var CurMove = ""
-			   var RSTEP   = false
-			   var Goon    = true
+		 var N  = 0
+			   var NR = 1
+			   var NC = 1
+			   var firstcolumn  = true
+			   var firstrow     = false
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
 						CommUtils.outblue("$name STARTS")
 						 vr.halt()   
-						 RobotDir.setDir(RobotDir.Direction.DOWN)  
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition( edgeName="goto",targetState="useMap", cond=doswitch() )
+					 transition( edgeName="goto",targetState="doMap", cond=doswitch() )
 				}	 
-				state("useMap") { //this:State
+				state("doMap") { //this:State
 					action { //it:State
-						solve("consult('mapProlog.pl')","") //set resVar	
-						solve("consult('maprules.pl')","") //set resVar	
-						solve("showCells","") //set resVar	
-						CommUtils.outyellow("$name | execThePlan SOLVE")
-						solve("plan(0,0,2,3,down,P)","") //set resVar	
-						CommUtils.outyellow("$currentSolution")
-						 CurPlan = getCurSol("P").toString().replace("[","").replace("]","").replace(",","")  
-						CommUtils.outyellow("PATH= $CurPlan")
-						//genTimer( actor, state )
-					}
-					//After Lenzi Aug2002
-					sysaction { //it:State
-					}	 	 
-					 transition( edgeName="goto",targetState="execThePlan", cond=doswitch() )
-				}	 
-				state("execThePlan") { //this:State
-					action { //it:State
-						if(  CurPlan.length > 0  
-						 ){ CurMove = ""+CurPlan[0]; 
-										CurPlan = CurPlan.drop(1) 
-						CommUtils.outblue("$name | execThePlan CurMove=$CurMove")
+						delay(200) 
+						 var RSTEP = vr.step(370)  
+						if(  RSTEP  
+						 ){if(  firstcolumn  
+						 ){ NR++  
+						}
+						if(  firstrow  
+						 ){ NC++  
+						}
+						forward("stepdone", "stepdone(1)" ,name ) 
 						}
 						else
-						 { CurMove=""  
+						 {forward("stepfailed", "stepfailed(1)" ,name ) 
 						 }
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition( edgeName="goto",targetState="doMove", cond=doswitchGuarded({ (CurMove.length > 0)  
-					}) )
-					transition( edgeName="goto",targetState="end", cond=doswitchGuarded({! ( (CurMove.length > 0)  
-					) }) )
+					 transition(edgeName="t00",targetState="doMap",cond=whenDispatch("stepdone"))
+					transition(edgeName="t01",targetState="turnAndgo",cond=whenDispatch("stepfailed"))
 				}	 
-				state("doMove") { //this:State
+				state("turnAndgo") { //this:State
 					action { //it:State
-						delay(200) 
-						if(  CurMove == "w"  
-						 ){ RSTEP = vr.step(350)  
-						 Goon = RSTEP  
+						if(  ! firstcolumn  
+						 ){ NR++  
 						}
-						if(  CurMove == "l"  
-						 ){ vr.turnLeft()  
+						if(  ! firstrow  
+						 ){ NC++  
 						}
-						if(  CurMove == "r"  
-						 ){ vr.turnRight()  
+						CommUtils.outcyan("$name | N=$N, NC=$NC, NR=$NR")
+						if(  ! firstrow  
+						 ){ firstrow = true  
 						}
-						//genTimer( actor, state )
-					}
-					//After Lenzi Aug2002
-					sysaction { //it:State
-					}	 	 
-					 transition( edgeName="goto",targetState="execThePlan", cond=doswitchGuarded({ Goon  
-					}) )
-					transition( edgeName="goto",targetState="planko", cond=doswitchGuarded({! ( Goon  
-					) }) )
-				}	 
-				state("end") { //this:State
-					action { //it:State
-						CommUtils.outyellow("$name | end with CurMove=$CurMove")
-						CommUtils.outblack("")
+						 firstcolumn = false  
+						 N = N + 1  
+						 vr.turnLeft()  
+						CommUtils.outcyan("$name | N=$N, NC=$NC, NR=$NR")
+						if(  N == 2  
+						 ){CommUtils.outyellow("$name | N=$N, NC=$NC, NR=$NR")
+						 val map = RoomMap(NR,NC)     
+						 map.setRobot( NR-1,NC-1 )    
+						 val MS  = map.toString()     
+						 map.saveRoomMap("map", MS )  
+						 val MP  = map.toProlog()     
+						 map.saveRoomMapProlog("mapProlog", MP)  
+						CommUtils.outyellow("$name | MAP: ")
+						CommUtils.outyellow("$MS ")
+						delay(1000) 
 						 System.exit(0)  
+						}
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-				}	 
-				state("planko") { //this:State
-					action { //it:State
-						CommUtils.outmagenta("$name | planko with CurPlan=$CurPlan")
-						 System.exit(0)  
-						//genTimer( actor, state )
-					}
-					//After Lenzi Aug2002
-					sysaction { //it:State
-					}	 	 
+					 transition( edgeName="goto",targetState="doMap", cond=doswitch() )
 				}	 
 			}
 		}

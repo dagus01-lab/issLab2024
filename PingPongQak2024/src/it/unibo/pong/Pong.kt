@@ -24,22 +24,38 @@ class Pong ( name: String, scope: CoroutineScope, isconfined: Boolean=false  ) :
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
-						CommUtils.outgreen("$name STARTS  ")
+						CommUtils.outgreen("$name STARTS")
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition(edgeName="t02",targetState="handleBall",cond=whenDispatch("ball"))
+					 transition(edgeName="t03",targetState="reply",cond=whenDispatch("ball"))
+					transition(edgeName="t04",targetState="endofexchange",cond=whenEvent("stopgame"))
 				}	 
-				state("handleBall") { //this:State
+				state("reply") { //this:State
 					action { //it:State
-						CommUtils.outcyan("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
-						 	   
-						if( checkMsgContent( Term.createTerm("ball(N)"), Term.createTerm("ball(x)"), 
+						if( checkMsgContent( Term.createTerm("ball(N)"), Term.createTerm("ball(X)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
-								forward("ball", "ball(${payloadArg(0)})" ,"ping" ) 
+								 val N = payloadArg(0).toInt()  
+								CommUtils.outgreen("$name receives $N")
+								if(  N <= 4  
+								 ){delay(500) 
+								forward("ball", "ball($N)" ,"ping" ) 
+								}
 						}
+						//genTimer( actor, state )
+					}
+					//After Lenzi Aug2002
+					sysaction { //it:State
+					}	 	 
+					 transition(edgeName="t05",targetState="reply",cond=whenDispatch("ball"))
+					transition(edgeName="t06",targetState="endofexchange",cond=whenEvent("stopgame"))
+				}	 
+				state("endofexchange") { //this:State
+					action { //it:State
+						CommUtils.outgreen("$name ENDS ")
+						 System.exit(0)  
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
