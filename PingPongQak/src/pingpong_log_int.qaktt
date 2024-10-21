@@ -1,0 +1,108 @@
+System -trace pingpong24
+
+Dispatch ball : ball(N) "info exchanged"
+Dispatch ballview: ball(N) "observed info"
+
+Event startgame: startgame(ARG) "event for game start"
+Event stopgame: stopgame(ARG) "event for game end" 
+
+Context ctxtest ip [host="localhost" port=8020]
+
+QActor ping context ctxtest{
+    [#  var N = 1;  #]
+  State s0 initial{
+/*2*/delay 1000 //``pong`` started ...
+    println("$name sends $N  ") color blue
+  }
+  Transition t0 whenEvent startgame->startgamestate
+  
+  State startgamestate{
+  	forward pong -m ball : ball($N)
+  }
+  
+  Goto receive
+
+  State receive{
+    //println("$name received  ") color blue
+  }
+  Transition t0
+/*5*/whenMsg ball      -> reply
+	whenEvent stopgame -> endofexchange
+
+  State reply{
+    [# N = N + 1 #]
+    delay 500
+    println("$name sends $N  ") color blue
+    forward pong -m ball : ball($N)
+  }
+  Goto receive
+
+  State endofexchange{
+    println("$name ENDS ") color blue
+    [# System.exit(0) #]
+  }
+}
+
+QActor pong context ctxtest {
+  State s0 initial{
+    println("$name STARTS") color green
+  }
+  Transition t0
+/*2*/whenMsg ball     -> reply
+	whenEvent stopgame -> endofexchange
+
+  State reply{
+    onMsg( ball : ball(X)){
+     [# val N = payloadArg(0).toInt() #]
+     println("$name receives $N") color green
+     if [# N <= 4 #]{
+       delay 500
+  /*3*/forward ping -m ball : ball($N)
+    }//no forward if N == 5
+    }
+  }
+  Transition t0
+    whenMsg ball      -> reply
+	whenEvent stopgame -> endofexchange
+	
+  State endofexchange{
+    println("$name ENDS ") color green
+	[# System.exit(0) #]
+  }
+}
+
+QActor referee context ctxtest{
+    [# var N = 0; val TOBSMAX=3000L #]
+  State s0 initial{
+    println("$name STARTS") color magenta
+/*1*/observeResource ping msgid ballview
+	observeResource pong msgid ballview
+	emit startgame: startgame(start) 
+	
+  }
+  Transition t0
+/*2*/whenTimeVar TOBSMAX -> gameended
+/*3*/whenMsg ballview -> updateinfoongame
+
+  State updateinfoongame{
+      onMsg( ballview :  ball(X) ){
+        [# N = payloadArg(0).toInt() #]
+      }
+  }
+  Transition t0
+    whenTimeVar TOBSMAX -> gameended
+    whenMsg ballview   -> updateinfoongame
+
+  State gameended{
+    println("$name waits for request") color magenta
+  }
+  Transition t0
+      /*5*/whenTime    2000 -> endgame
+ 
+	State endgame{
+		emit stopgame: stopgame(stop)
+		delay 2000
+		println("Game end") color red
+        [# System.exit(0) #]
+	}
+}

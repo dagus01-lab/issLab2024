@@ -8,3 +8,5 @@
 {"actor":"robotpos", "msgType":"dispatch", "curstate":"waitclientrequest", "nextstate":"checkTheOwnerForSetDir", "msgId":"setdirection"}
 {"actor":"perimetermeasure", "msgType":"dispatch", "curstate":"wait", "nextstate":"handleStartMeasure", "msgId":"startMeasure"}
 {"actor":"perimetermeasure", "msgType":"dispatch", "curstate":"wait", "nextstate":"updatePerimeter", "msgId":"stepDone"}
+{"actor":"sonarobs", "msgType":"dispatch", "curstate":"s0", "nextstate":"handlebrdata", "msgId":"brdata"}
+{"actor":"sonarobs", "msgType":"dispatch", "curstate":"handlebrdata", "nextstate":"handlebrdata", "msgId":"brdata"}

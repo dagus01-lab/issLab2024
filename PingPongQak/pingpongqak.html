@@ -240,27 +240,28 @@ div.imagedesc{
 <div class="body"> 
 <h2>Introduction</h2>
 <div class="remark">
-L'oggetto di studio è un sistema formato da componenti che comunichino tra di loro con il meccanismo del ping pong
+Design e sviluppo di un sistema che simuli lo scambio di informazione in stile ping-pong.
 </div>
 
 <h2>Requirements</h2>
 
  
 <div class="remark">
-Costruire un sistema software distrubuito costruito da due qak che si inviino informazioni con il meccanismo del ping pong, ovvero,
-che ogni volta che uno dei due invia un messaggio all'altro, si aspetti al massimo una risposta.
-Inoltre, occorre che, una volta che uno dei due invii un messaggio, l'altro non invii altri messaggi.
+Costruire un sistema software distrubuito che simuli uno scambio di informazioni tra due giocatori
+(ping e pong), mediati da un arbitro (referee) che funga da osservatore e da coordinatore.
 </div>
 
  
 
 <h2>Requirement analysis</h2>
 <div class="remark">
-<ol>
-<li>I requisiti esprimono quale protocollo di comunicazione specifico sfruttano i componenti coinvolti</li>
-<li>I requisiti esprimono quale linguaggio utilizzare: il linguaggio qak</li>
-<li>I componenti sono enti computazionali attivi e autonomi</li>
-</ol>
+Nel gioco del ping-pong ci sono:
+<ul>
+<li>Due giocatori, chiamati ping e pong</li>
+<li>Una palla, che viene scambiata tra i due giocatori</li>
+<li>Un arbitro che funge da coordinatore e osservatore</li>
+<li>Un sender iniziale, che è stato indicato con ping</li>
+</ul>
 </div>
  
 
@@ -275,9 +276,12 @@ Tuttavia, se la risposta è presente, dev'essere una sola, e deve avvenire solam
 fatta per il messaggio iniziale, che permette di inizializzare la comunicazione).
 
 <h4>Architettura logica</h4>
-I componenti vengono rappresentati come attori QAK: in questo modo questi saranno modellati come Automi a Stati Finiti,
-e questo permetterà di esprimere il problema utilizzando concetti di più alto livello, ovvero in termini di scambio di
-messaggi.
+<ul>
+<li>ping, pong e referee sono modellati come attori</li>
+<li>la palla può essere modellata come messaggio. Tuttavia, non si hanno abbastanza informazioni
+su come implementarla (ovvero se implementarla come request, dispatch o evento)</li>
+
+</ul>
 </div>
 
 <div class="remark">

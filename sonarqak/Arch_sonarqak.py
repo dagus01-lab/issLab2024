@@ -29,4 +29,7 @@ with Diagram('sonarqakArch', show=False, outformat='png', graph_attr=graphattr) 
           sonar24=Custom('sonar24','./qakicons/symActorSmall.png')
           sonardevice=Custom('sonardevice','./qakicons/symActorSmall.png')
           sonarusage=Custom('sonarusage','./qakicons/symActorSmall.png')
+     with Cluster('ctxrobotcleaner', graph_attr=nodeattr):
+          robotcleaner=Custom('robotcleaner','./qakicons/symActorSmall.png')
+     sonardevice >> Edge(color='blue', style='solid',  decorate='true', label='<pause &nbsp; >',  fontcolor='blue') >> robotcleaner
 diag

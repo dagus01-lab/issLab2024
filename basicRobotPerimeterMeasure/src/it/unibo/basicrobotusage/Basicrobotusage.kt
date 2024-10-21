@@ -36,7 +36,7 @@ class Basicrobotusage ( name: String, scope: CoroutineScope, isconfined: Boolean
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition(edgeName="t028",targetState="startmeasure",cond=whenReply("engagedone"))
+					 transition(edgeName="t030",targetState="startmeasure",cond=whenReply("engagedone"))
 				}	 
 				state("startmeasure") { //this:State
 					action { //it:State
@@ -73,14 +73,16 @@ class Basicrobotusage ( name: String, scope: CoroutineScope, isconfined: Boolean
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition(edgeName="t029",targetState="handlesonardata",cond=whenEvent("sonardata"))
-					transition(edgeName="t030",targetState="handleStepDone",cond=whenReply("stepdone"))
-					transition(edgeName="t031",targetState="handleStepFail",cond=whenReply("stepfailed"))
-					transition(edgeName="t032",targetState="handlePerimeterMeasureEnd",cond=whenReply("perimeter"))
+					 transition(edgeName="t031",targetState="handleStepDone",cond=whenReply("stepdone"))
+					transition(edgeName="t032",targetState="handleStepFail",cond=whenReply("stepfailed"))
+					transition(edgeName="t033",targetState="handlePerimeterMeasureEnd",cond=whenReply("perimeter"))
+					interrupthandle(edgeName="t034",targetState="handlesonardata",cond=whenDispatch("pause"),interruptedStateTransitions)
 				}	 
 				state("handlesonardata") { //this:State
 					action { //it:State
+						CommUtils.outyellow("Sonar found. Waiting...")
 						delay(3000) 
+						returnFromInterrupt(interruptedStateTransitions)
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002

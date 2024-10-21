@@ -21,36 +21,41 @@ class Sonarobs ( name: String, scope: CoroutineScope, isconfined: Boolean=false 
 	}
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
 		//val interruptedStateTransitions = mutableListOf<Transition>()
+		 var pauseSent = false  
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
-						CommUtils.outblack("$name STARTS ")
+						CommUtils.outgreen("$name | START")
+						observeResource("localhost","8020","ctxbasicrobot","basicrobot","brdata")
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition( edgeName="goto",targetState="work", cond=doswitch() )
+					 transition(edgeName="t028",targetState="handlebrdata",cond=whenDispatch("brdata"))
 				}	 
-				state("work") { //this:State
+				state("handlebrdata") { //this:State
 					action { //it:State
+						if( checkMsgContent( Term.createTerm("brdata(N)"), Term.createTerm("brdata(basicrobot,DATA)"), 
+						                        currentMsg.msgContent()) ) { //set msgArgList
+								 val data = payloadArg(1)  
+								if(  data.contains("sonar")    
+								 ){if(  ! pauseSent  
+								 ){forward("pause", "pause(ok)" ,"basicrobotusage" ) 
+								CommUtils.outmagenta("$name | sent pause to basicrobotusage $data")
+								 pauseSent = true  
+								}
+								}
+								else
+								 { pauseSent = false  
+								 }
+						}
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition(edgeName="t028",targetState="handlesonardata",cond=whenEvent("sonardata"))
-				}	 
-				state("handlesonardata") { //this:State
-					action { //it:State
-						CommUtils.outyellow("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
-						 	   
-						//genTimer( actor, state )
-					}
-					//After Lenzi Aug2002
-					sysaction { //it:State
-					}	 	 
-					 transition( edgeName="goto",targetState="work", cond=doswitch() )
+					 transition(edgeName="t029",targetState="handlebrdata",cond=whenDispatch("brdata"))
 				}	 
 			}
 		}

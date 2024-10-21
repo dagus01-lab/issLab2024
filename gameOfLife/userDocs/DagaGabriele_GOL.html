@@ -1,0 +1,390 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <!--
+<link rel="stylesheet" type="text/css" href="../css/issStyle1.css">
+<script type="text/javascript" src="../css/issStyle.js"></script>
+-->
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/foundation-sites@6.7.4/dist/css/foundation.min.css" crossorigin="anonymous">
+		<script src="https://cdn.jsdelivr.net/npm/foundation-sites@6.7.4/dist/js/foundation.min.js"crossorigin="anonymous"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="./commons/resources/styles/templateISS.css">
+        <link rel="stylesheet" type="text/css" href="./commons/resources/styles/main.css">
+        <link rel="stylesheet" type="text/css" href="./commons/resources/styles/navbar.css">
+        <link rel="stylesheet" type="text/css" href="./commons/resources/styles/table.css">
+        <link rel="stylesheet" type="text/css" href="./commons/resources/styles/code.css">
+        <!-- <script type="text/javascript" src="./commons/resources/scripts/myScripts.js"></script> -->
+<style type="text/css">
+body
+{
+    margin-left:  30px;
+    margin-right: 30px;
+};
+
+P
+{
+    font-family: Tahoma;
+    font-size: 10pt;
+};
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+	font-size: 93%;
+}
+
+a:hover {
+    background-color: #cccccc;
+}
+
+
+hr {
+    clear: both;
+    height: 1px;
+    color: #242424;
+    background-color: transparent;
+}
+
+h1, h2, h3 {
+    color: #242424;
+    clear: left;
+    font: 100% Tahoma, Helvetica, Arial, sans-serif;
+    margin-bottom: 0.5em;
+    padding-top: 0.5em;
+	border-radius: 10px;
+	padding: 5px;
+}
+
+top {
+	width: 100%;
+}
+
+
+#i {
+    color: #ff1010;
+}
+tt{
+	font-family: "Arial";
+    font-size: 90%;
+	color: #006600;
+}
+em{
+	font-family: "Arial";
+    font-size: 80%;
+	font-weight: bold;
+	border-style:solid;
+	border-color: #abe876;
+    color: #1632cc;
+}
+bc{
+	font-family: "Arial";
+	font-size: 90%;
+	font-weight: bold;
+    color: #990000;
+	background-color: #fcf8c7;
+}
+ks{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #0000CD	;
+	font-size: 90%;
+}
+kc{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #008000	;
+	font-size: 90%;
+}
+pre{
+	font-family: "Consolas";
+	font-size: 85%;
+	background-color: #f5f5f5;
+	border: 1.5px solid silver;
+	padding: 5px;
+}
+m{
+	font-family: "Helvetica";
+	line-height: 100%;
+ 	font-size: 75%;
+}
+div.body{
+
+    font-size: 18px;
+}
+k{
+    color: #990000;
+	font-weight: bold;
+	font-size: 90%;
+}
+h1 {
+    font-size: 150%;
+    background-color: #b2c0ff;
+	padding: 10px;
+}
+
+h2 {
+    background-color: #9ed8ff;
+    font-size: 130%;
+}
+
+h3 {
+	background-color: #e6ccff;
+    font-size: 100%;
+}
+h4 {
+    background-color: #ccffcc;
+    font-size: 100%;
+	width: 95%;
+	border-radius: 5px;
+	padding: 2px;
+}
+h5 {
+    background-color: #d5ffb0;
+    font-size: 100%;
+
+}
+div.req{
+	background-color: #d9ffb3;
+    font-size: 18px;
+	width: 700px;
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}
+div.remark{
+	background-color: #E3F2FD;
+    border: 1.5px solid #d5f2ed;
+    padding: 15px;
+    margin: 10px;
+	border-radius: 25px;
+}
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+ol, ul, li {
+  margin: 0;
+  margin-left: 10px;
+  padding: 0;
+  padding-bottom: 5px;
+}
+
+table, th, td {
+	border: 1px solid black;
+}
+
+img {
+	border: 1.5px solid #d5f2ed
+
+}
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+}
+
+div.wrapdesc{
+	width: 90%;
+	margin: auto;
+}
+
+div.imagedesc{
+	width: 85%;
+	margin: auto;
+}
+</style>
+
+
+
+</head>
+
+
+
+
+
+
+<title>Game Of Life</title></head>
+
+<!--
+	<body onload="loadNav();">
+		<div id="openButton" class="openButton" onclick="openNav(true)">&#9776; Menu</div>
+		<div id="sidenav" class="sidenav">
+			<a class="closeButton" href="javascript:void(0)" onclick="closeNav(true)">&times;</a>
+			<a href=".README.html">ReadMe</a>
+			<a class="sprint" href="../../../Sprint0/Codice/userDocs/Cold%20Storage%20Service%20-%20Natali%20V3.html">Sprint0</a>
+			<a class="sprint" href="../../../Sprint1.0/Codice/userDocs/Sprint%201.0%20-%20V3.html">Sprint1.0</a>
+			<a class="sprint" href="../../../Sprint1.1/Codice/userDocs/Sprint%201.1%20-%20V3.html">Sprint1.1</a>
+			<a id="currentSprint" class="sprint" href="#">&#8211;&#8212; Sprint2 &#8212;&#8211;</a>
+			<div class="sidenavSection">
+				<a href="#Goal Sprint 2">Goal Sprint 2</a>
+				<a href="#Requisiti">Requisiti</a>
+				<a href="#Analisi dei Requisiti">Analisi dei Requisiti</a>
+				<a href="#Analisi del Problema">Analisi del Problema</a>
+				<a href="#Test Plan">Test Plan</a>
+				<a href="#Progettazione">Progettazione</a>
+				<a href="#Deployment">Deployment</a>
+			</div>
+			<p class="separator">&mdash;&mdash;&mdash;&ndash;&ndash;&mdash;&mdash;&mdash;</p>
+			<a class="sprint" href="../../../Sprint3/Codice/userDoc/Sprint%203.html">Sprint3</a>
+			<bottom-spacer/>
+		</div>
+-->
+<body>
+<div id="top">
+<h1>Game Of Life<font size="5"></font> </h1>
+</div>
+
+<div class="body">
+<h2>Introduction</h2>
+<div class="remark">
+L'oggetto di studio è la simulazione del gioco Game Of Life
+</div>
+
+<h2>Requirements</h2>
+
+
+<div class="remark">
+Si chiede di costruire un sistema software che simuli il "Game Of Life". 
+<ul>
+	<li>Una griglia rettangolare (detta mondo) di caselle quadrate (dette celle) si estende all’infinito in tutte le direzioni.</li>
+	<li>Gli stati di tutte le celle in un dato istante sono usati per calcolare lo stato delle celle all’istante successivo.</li>
+	<li>Ogni cella ha 8 celle vicine.</li>
+	<li>Le celle del mondo vengono aggiornate simultaneamente nel passaggio (generazione) da un istante a quello successivo secondo le seguenti regole:
+		<ol>
+			<li>Una cella viva con meno di due celle vive adiacenti muore, per isolamento.</li>
+			<li>Una cella viva con due o tre celle vive adiacenti sopravvive alla generazione successiva</li>
+			<li>Una cella viva con più di tre celle vive adiacenti muore, per sovrappopolazione.</li>
+			<li>Una cella morta con esattamente tre celle vive adiacenti diventa viva, per riproduzione.</li>
+		</ol>
+	</li>
+</ul>
+</div>
+
+
+
+<h2>Requirement analysis</h2>
+<div class="remark">
+	Nella pratica, il gioco dovrà subire le seguenti modifiche:
+	<ul>
+		<li>La griglia ha dimensioni finite.</li>
+		<li>La griglia si può pensare come una matrice di RowsNum righe e ColsNum colonne.</li>
+		<li>Oltre a celle con 8 celle vicine, ve ne sono altre con 3 vicine (quelle negli angoli della griglia) ed altre con 5 vicine (quelle nel bordo della griglia e non agli angoli).</li>
+	</ul>
+	Inoltre, si potrebbero prendere due decisioni di progetto:
+	<ol>
+		<li>un sistema software concentrato che definisce a manipola la griglia di Conway come una struttura dati</li>
+		<li>un sistema software distribuito in cui ciascuna cella è un ente attivo ed autonomo, capace di intergire con le altre celle solo attraverso scambio di messaggi, in toale assenza di memoria comune.</li>
+	</ol>
+	Si decide quindi di optare per la seconda scelta in quanto più scalabile
+</div>
+
+
+</div>
+
+<h2>Problem analysis</h2>
+<div class="remark">
+	Ogni cella quindi può essere pensata come ente autonomo e indipendente che comunichi con gli altri tramite scambio di messaggi.
+	A questo punto si potrebbe pensare ad un sistema distribuito composto da tre entità:
+	<ul>
+		<li><b>goldisplay</b>: si occuperà della visualizzazione della griglia su un opportuno supporto grafico</li>
+		<li><b>golcontroller</b>: si occuperà dell'inizializzazione del gioco e dell'aggiornamento al turno successivo</li>
+		<li>N*M attori di tipo <b>cell</b>: si occupano del manteniment e dell'aggiornamento di ogni singola cella</li>
+	</ul>
+	Ciascuna di queste entità sarà modellata come attore.<br>
+	Si noti come il linguaggio QAK permetta la generazione dinamica di attori con la clausola <b>dynamicOnly</b>.
+	Questa verrà usata per creare tanti attori di tipo cell<br>
+	In questo tipo di soluzione è necessario ripensare al criterio di vicinanza delle celle, che non saranno più degli elementi
+	contigui di una collezione di dati, bensì entità con nomi che soddisfano il criterio di vicinanza. 
+	Un primo esempio di come nominare le celle può essere il seguente: <b>"c_{row}_{column}"</b><br>
+
+	<h4>Interazione logica</h4>
+	Dai requisiti non si evincono indizi su come il committente desidera che avvengano le interazioni. 
+	Si lascia quindi questa discussione alla fase di progettazione.
+</div>
+
+<div class="remark">
+<h2>Test plans</h2>
+
+</div>
+
+<div class="remark">
+	<h2>Project</h2>
+	A differenza della fase di analisi, al fine di delegare ad un'entità esterna l'avvio del sistema, si decide di introdurre un apposito attore
+	<b>golinitializer</b>. Il sistema quindi sarà composto dagli attori:
+		<ul>
+			<li><b>golinitializer</b>: si occuperà dell'inizializzazione dell'ambiente su cui verrà eseguito il gioco</li>
+			<li><b>goldisplay</b>: si occuperà della visualizzazione della griglia su un opportuno supporto grafico</li>
+			<li><b>golcontroller</b>: si occuperà dell'inizializzazione del gioco e dell'aggiornamento al turno successivo</li>
+			<li>N*M attori di tipo <b>cell</b>: si occupano del manteniment e dell'aggiornamento di ogni singola cella</li>
+		</ul>
+	<h3>Inizializzazione del sistema</h3>
+	Per inizializzare il sistema si è deciso di predisporre di un file di configurazione in formato json <a href="../gol_config.json">gol_config.json</a>
+	(che contiene: numero di righe, numero di colonne, dimensione di una cella)
+	che viene letto da un opportuno oggetto kotlin <a href="../src/main/resources/GOLConfigReader.kt">GOLConfigReader.kt</a> all'interno dell'attore 
+	golinitializer.
+	Riguardo come far partire il gioco, si è fatto uso del metodo <b>initGame</b> nella classe ausiliaria <a href="../src/main/resources/GridSupport.kt">GridSupport</a>
+	per creare dinamicamente le celle, che a loro volta hanno notificato il golinitializer della loro avvenuta inizializzazione tramite dispatch.
+	Si è poi deciso di sfruttare un messaggio di tipo event (gameReady) per comunicare agli altri componenti che gli attori sono stati predisposti correttamente.
+
+	<h3>Gestione del gioco</h3>
+	Il committente ha fornito una classe java che consentisse di avere un'applicazione desktop grafica, che permettesse di essere usata da un attore: 
+	<a href="../src/main/java/GoLGui.java">GOLGui</a>. <br>
+	L'interfaccia grafica fornita presenta una griglia e due bottoni: start/stop e clear. <br>
+	Per gestire i giochi creati, si è deciso di permettere all'attore goldisplay di ricevere l'avvenuta pressione del bottone "start" e di notificare al
+	golcontroller tramite dispatch l'inizio del gioco (si è deciso di usare dispatch in quanto un'event che risvegliasse tutte le celle avrebbe obbligato
+	le celle ad occuparsi anche dell'inizio dei rounds, cosa che invece si evita usando un semplice dispatch al golcontroller, e delegando a quest'ultimo
+	il compito di ordinare alle celle di notificare il proprio stato periodicamente)
+	<h3>Interazione tra celle</h3>
+	A livello di interazione, si è deciso di modellare l'aggiornamento degli stati delle celle con il meccanismo degli updateResource:
+	ogni cella osserva le celle confinanti, e a sua volta è osservata da tutte queste ultime, dal golcontroller e dal goldisplay.
+	Alternative possibili sarebbero state: 
+	<ul>
+		<li><b>Evento</b>: il che però avrebbe comportato (oltre ad un maggiore rischio di saturazione della rete) una maggiore difficoltà a livello 
+			di celle, per capire quando in un round tutte le celle vicine avessero finito di mandare aggiornamenti</li>
+		<li><b>Dispatch</b>: il che però avrebbe obbligato ogni volta a conoscere il nome delle celle vicine e mandare messaggi "manualmente"</li>
+		<li><b>MQTT</b>: alternativa valida, ma più adatta per un contesto in cui le celle potrebbero essere eseguite su nodi fisici distinti</li>
+	</ul>
+	In questo modo, ogni "round" viene definito a partire dal momento in cui il goldisplay emette un evento nextCellUpdate, che permette a tutte 
+	le celle di notificare il proprio stato al controller e alla gui.<br>
+	Il modello presentato può essere trovato <a href="../src/GOL.qak">qui</a>.
+
+	
+</div>
+
+<div class="remark">
+<h2>Testing</h2>
+</div>
+
+
+<h2>Deployment</h2>
+Posizionarsi sulla directory principale ed eseguire:
+<ul>
+	<li><b>gradlew eclipse</b> per installare le dipendenze</li> 
+	<li><b>gradlew run</b> per eseguire l'applicazione</li>
+</ul>
+
+<h2>Maintenance</h2>
+
+<!-- USEFUL
+<table style="width:100%" border="1">
+<tr>
+<td style="width:50%">
+</td>
+<td></td>
+</tr>
+</table>
+-->
+
+<br/><br/>
+</div>
+
+<div style="background-color:rgba(86, 56, 253, 0.9); width:60%;text-align:left;color:white">
+By studentName email: gabriele.daga@studio.unibo.it,
+<img src="./foto_personale.jpg" alt="mbot" width="15%" height="15%">
+GIT repo: https://github.com/dagus01-lab/issLab2024
+</div>
+</body>
+</html>

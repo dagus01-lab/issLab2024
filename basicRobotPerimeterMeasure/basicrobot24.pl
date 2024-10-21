@@ -35,6 +35,8 @@ request( getrobotstate, getrobotstate(ARG) ).
 reply( robotstate, robotstate(POS,DIR) ).  %%for getrobotstate
 request( getenvmap, getenvmap(X) ).
 reply( envmap, envmap(MAP) ).  %%for getenvmap
+dispatch( pause, pause(N) ).
+dispatch( brdata, brdata(N) ).
 %====================================================================================
 context(ctxbasicrobot, "localhost",  "TCP", "8020").
  qactor( engager, ctxbasicrobot, "it.unibo.engager.Engager").
@@ -47,5 +49,7 @@ context(ctxbasicrobot, "localhost",  "TCP", "8020").
  static(robotpos).
   qactor( perimetermeasure, ctxbasicrobot, "it.unibo.perimetermeasure.Perimetermeasure").
  static(perimetermeasure).
+  qactor( sonarobs, ctxbasicrobot, "it.unibo.sonarobs.Sonarobs").
+ static(sonarobs).
   qactor( basicrobotusage, ctxbasicrobot, "it.unibo.basicrobotusage.Basicrobotusage").
  static(basicrobotusage).

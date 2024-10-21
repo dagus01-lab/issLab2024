@@ -18,7 +18,7 @@ def main():
         dest = server_address+":"+server_port
         n = 10
         msg_num = 0
-        client_socket.sendall("msg($msg_id, $msg_type, $msg_sender, $dest, $n, $msg_num)").encode('utf-8'))
+        client_socket.sendall("msg($msg_id, $msg_type, $msg_sender, $dest, $n, $msg_num)").encode('utf-8')
 
         # Ricevi la risposta dal server
         data = client_socket.recv(1024)

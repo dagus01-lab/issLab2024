@@ -62,7 +62,7 @@ dependencies {
 
     /* COROUTINES ******************************************************************************* */
     // https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-coroutines-core
-    implementation group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-core', version: "$kotlinVersion"   //, ext: 'pom'
+    implementation group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-core', version: "$kotlinVersion", ext: 'pom'
     // https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-coroutines-core-jvm
     implementation group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-core-jvm', version: "$kotlinVersion"
 
@@ -144,10 +144,9 @@ eclipse {
  }
 
 
-
 application {
-    //Define the main class for the application.
-    mainClassName    = 'it.unibo.ctxtest.MainCtxtestKt'
+    // Define the main class for the application.
+    mainClass = 'it.unibo.ctxtest.MainCtxtestKt'
 }
  
  jar {
@@ -164,8 +163,8 @@ application {
 }
 
 task dovesiamo {
-    println("projectDir= $projectDir")  
-    println("buildDir  = $buildDir")    
+    println("projectDir= $projectDir") //C:\Didattica2024\issLab24\service24
+    println("buildDir  = $buildDir")   //C:\Didattica2024\issLab24\service24\build
 }
 
 distributions {
@@ -178,13 +177,6 @@ distributions {
         }
     }
 } 
-
-task run0(type: JavaExec) {
-    group = "Execution"
-    description = "Run the main class with JavaExecTask"
-    classpath = sourceSets.main.runtimeClasspath
-    main = 'it.unibo.ctxtest.MainCtxtestKt'
-}
 
 /*
 //TODO

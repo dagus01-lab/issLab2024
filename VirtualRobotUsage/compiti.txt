@@ -1,4 +1,0 @@
-1) sostituire il mock con il raspberry
-    a. far girare un actor sul raspberry e tenere due contesti separati
-    b. mettendo la qualifica mqtt non c'è più nisogno che le parti conoscano i contesti delle altre.
-2)

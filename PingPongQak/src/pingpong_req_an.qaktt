@@ -1,0 +1,22 @@
+System pingpong24
+
+Context ctxping  ip [host="localhost" port=8014]
+Context ctxpong  ip [host="127.0.0.1" port=8015]
+
+QActor ping context ctxping{
+    State s0 initial{
+        println("$name STARTS  ") color blue
+    }
+}
+
+QActor pong context ctxpong {
+    State s0 initial{
+        println("$name STARTS") color green
+    }
+}
+
+QActor referee context ctxping{
+    State s0 initial{
+        println("$name STARTS  ") color red
+    }
+}

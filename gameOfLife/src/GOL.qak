@@ -1,0 +1,268 @@
+System gol
+
+Dispatch guicmd:guicmd(C) "Commands sent by the GUI to the goldisplay"
+Event gameReady:gameReady(N) "Event that indicates that the game can be started"
+Dispatch gameStart:gameStart(N) "Event that simulates the beginning of the game"
+Dispatch gameStop:gameStop(N) "Event that simulates the end of the game"
+Event nextCellUpdate:nextCellUpdate(N) "Event that simulates the order from the controller to make a new update"
+Event clearCells:clearCells(N) "Event that allows to clear all the cells state"
+Dispatch cellUpdate:cellUpdate(C,S) "Message that simulates an update from cell C with status S"
+Dispatch cellReady:cellReady(M) "Message that indicates that a cell has been correctly initialized"
+Dispatch guidone:guidone(N) "Message that indicates that the GUI has successfully set up"
+Dispatch switchstate:switchstate(N) "Message that indicates that the cell must switch its state"
+
+Context ctx_gol ip [host="localhost" port=8050]
+
+QActor goldisplay context ctx_gol withobj display using "main.java.GoLGui()"{
+	import "main.resources.GridSupport"
+	[#var gameStarted = false#]
+	State s0 initial{
+		println("$name | STARTS") color yellow
+	}
+	Transition t0 whenEvent gameReady -> setupGUI
+	State setupGUI{
+		[# main.resources.GridSupport.observeAllCells(myself, context!!.name, "cellUpdate") #] //OBS
+
+		[# kotlin.concurrent.thread(start = true) { 
+			 display.initialize(myself, GridSupport.conf.rows, GridSupport.conf.columns, GridSupport.conf.cellSize)  //launch javafx.application.Application
+		   }
+		#]
+		forward golinitializer -m guidone:guidone(1)
+	}
+	Goto wait
+	State wait{
+		
+	}
+	Transition t0 whenMsg guicmd -> handleGUIcmd
+					whenMsg cellUpdate -> handleCellUpdate
+	
+	State handleGUIcmd{
+		println("$name | received new update from GUI") color red
+		onMsg( guicmd : guicmd(startthegame)){ 
+            forward golcontroller -m gameStart:gameStart(1)
+            [#gameStarted = true#]
+         } 		
+         onMsg( guicmd : guicmd(stopthegame)){
+         	forward golcontroller -m gameStop:gameStop(1)
+         	[#gameStarted = false#]
+		}
+        onMsg( guicmd : guicmd(click(X,Y)) ){
+        	if[#!gameStarted#]{
+        		[# 
+	        		var x = payloadArg(0).split("(")[1].split(",")[0]
+	        		var y = payloadArg(0).split("(")[1].split(",")[1].split(")")[0]
+	        		
+	        		val cellName = "cellc_${x}_${y}"  
+	         		forward( "switchstate", "switchstate(ok)", cellName)         		
+	         	#]    
+	         	//println("$name | sent switchstate to cell $cellName") color red
+	         	
+        	}      	  
+		}
+         onMsg( guicmd : guicmd(clear)){
+			 emit clearCells : clearCells(1)  //for the cells
+			 [#gameStarted = false#]
+		}
+		
+	}
+	Goto wait
+	State handleCellUpdate{
+		onMsg(cellUpdate:cellUpdate(C,N)){
+				if[#payloadArg(1)!= "nonews"#]{
+				[#
+					var cell = payloadArg(0)
+					var state = payloadArg(1).toBoolean()
+					var x = cell.split("_")[1].toInt()
+					var y = cell.split("_")[2].toInt()
+				#]
+				//println("$name | cellUpdate(${payloadArg(0)}, ${payloadArg(1)}) received from cell") color red
+				if[#state#]{
+					[#display.cellOn(x, y)#]
+				}
+				else{
+					[#display.cellOff(x, y)#]
+				}
+			}
+		}	
+	}
+	Goto wait
+}
+QActor golinitializer context ctx_gol{
+	import "main.resources.GridSupport"
+	[#
+		var cellsNum = 0
+		var readyCells = 0
+	#]
+	State s0 initial{
+		println("$name | STARTS") color yellow
+	}
+	Goto createTheGame
+	State createTheGame{
+		[#
+			cellsNum = GridSupport.initGame("gol_config.json", myself)
+		#]
+	}
+	Goto waitingCellsToBeReady
+	State waitingCellsToBeReady{
+		
+	}
+	Transition t0 whenMsg cellReady -> handleCellReady
+	State handleCellReady{
+		onMsg(cellReady:cellReady(N)){
+			[#var cellName = payloadArg(0)#]
+			println("$name | cell $cellName ready!") color green
+			[#readyCells += 1#]
+		}
+	}
+	Goto startTheGame if [#readyCells == cellsNum#] else waitingCellsToBeReady
+	State startTheGame{
+		println("$name | game ready to be started") color green
+		emit gameReady:gameReady(1)
+	}
+}
+QActor golcontroller context ctx_gol{
+	import "main.resources.GridSupport"
+	[#
+		var updatedCells = 0
+		var cellsNum = 0
+		var stalemate = true
+		var Round = 0
+	#]
+	State s0 initial{
+		println("$name | STARTS") color blue
+	}
+	Transition t0 whenEvent gameReady -> handleGameReady
+	
+	State handleGameReady{
+		[#
+			cellsNum = GridSupport.conf.rows*GridSupport.conf.columns
+			main.resources.GridSupport.observeAllCells(myself, context!!.name, "cellUpdate")
+		#]
+	}
+	Goto waitForGameToStart
+	State waitForGameToStart{
+		
+	}
+	Transition t0 whenMsg gameStart -> handleGameStart
+	State handleGameStart{
+		println("$name | game started") color blue
+	}
+	Goto wait
+	State wait{
+		println("$name | ROUND $Round")
+		[#
+			Round += 1
+			updatedCells = 0
+			stalemate = true
+		#]
+	}
+	Transition t0 whenTime 1000 -> letCellsUpdate
+					whenMsg gameStop -> waitForGameToStart
+	State letCellsUpdate{
+		emit  nextCellUpdate:nextCellUpdate(1)
+	}
+	Goto waitingCellsToBeReady
+	State waitingCellsToBeReady{
+		
+	}
+	Transition t0 whenMsg cellUpdate -> handleCellUpdate
+	State handleCellUpdate{
+		
+		onMsg(cellUpdate:cellUpdate(C,N)){
+			if[#payloadArg(1)!= "nonews"#]{
+				[#	
+					var status = payloadArg(1).toBoolean()
+					if(status){
+						stalemate = false
+					}
+					updatedCells += 1
+				#]
+			//println("$name | cellUpdate(${payloadArg(0)}, ${payloadArg(1)}) received from cell") color blue
+			//println("received $updatedCells updates") color blue
+			}
+			
+		}
+	}
+	Goto checkIfStalemate if [#updatedCells == cellsNum#] else waitingCellsToBeReady
+	State checkIfStalemate{
+		if[#stalemate#]{
+			println("$name | STALEMATE!") color blue
+		}
+	}
+	Goto wait
+}
+
+QActor cell context ctx_gol dynamicOnly {
+	import "main.resources.GridSupport"
+	[#
+		var MyState = false
+		var numNeighbors = 0
+		var numNeighborsOn = 0	
+		var numUpdates = 0
+	#]
+	State s0 initial{
+		println("$name | STARTS") color yellow
+		[#var Name=name#]
+		forward golinitializer -m cellReady:cellReady($Name)
+	}
+	Transition t0 whenEvent gameReady -> handleGameReady
+	State handleGameReady{
+		[#numNeighbors = main.resources.GridSupport.observeNeighborCells(myself, context!!.name, "cellUpdate")#]
+		println("$name | initialized with $numNeighbors neighbors") color yellow
+	}
+	Goto wait
+	State wait{
+		[#
+			numNeighborsOn = 0
+			numUpdates = 0
+		#]
+	}
+	Transition t0 whenEvent nextCellUpdate->uploadState
+				whenMsg switchstate -> handleSwitchState
+	State handleSwitchState{
+		[#MyState = !MyState#]
+		//println("$name | changed current cell value to $MyState") color yellow
+	}				
+	Goto wait
+	State uploadState{
+		//println("$name | sent a cellUpdate") color yellow
+		
+		updateResource[#"$MyState"#]
+		delay 10 
+	}
+	Goto waitingForMoreUpdates
+	State waitingForMoreUpdates{
+		
+	}
+	Transition t0 whenMsg cellUpdate-> handleCellUpdate
+	State handleCellUpdate{
+		//println("$name | received $numUpdates neighbor updates") color yellow
+		onMsg(cellUpdate:cellUpdate(C,N)){
+			if[#payloadArg(1)!="nonews"#]{
+				[#
+					numUpdates += 1
+					var state = payloadArg(1).toBoolean()
+				#]
+				if[#state#]{
+					[#numNeighborsOn +=1#]
+				}
+				//println("$name | received cellUpdate(${payloadArg(0)}, ${payloadArg(1)})") color yellow
+			}
+		}
+	}
+	Goto updateStatus if [#numUpdates == numNeighbors#] else waitingForMoreUpdates
+	State updateStatus{
+		//println("$name | received updates from every neighbor") color yellow
+		if[#MyState == true#]{
+			if[#numNeighborsOn < 2 || numNeighborsOn > 3#]{
+				[#MyState = false#]
+			}
+		} 
+		else{
+			if[#numNeighborsOn==3#]{
+				[#MyState = true#]
+			}
+		}
+	}
+	Goto wait
+}

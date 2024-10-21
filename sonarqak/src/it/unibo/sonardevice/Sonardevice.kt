@@ -66,9 +66,10 @@ class Sonardevice ( name: String, scope: CoroutineScope, isconfined: Boolean=fal
 											CommUtils.outred("$name readSonarDataERROR: $e "   )
 									}
 								}//if
-						if(  Distance > 0  
+						if(  Distance > 12  
 						 ){CommUtils.outyellow("$name with python: data = $data")
 						emitLocalStreamEvent("distance", "distance($Distance)" ) 
+						forward("pause", "pause(K)" ,"robotcleaner" ) 
 						}
 						forward("doread", "doread(1)" ,name ) 
 						//genTimer( actor, state )

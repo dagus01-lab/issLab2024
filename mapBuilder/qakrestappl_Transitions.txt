@@ -1,2 +1,0 @@
-{"actor":"mapbuilder", "msgType":"dispatch", "curstate":"doMap", "nextstate":"doMap", "msgId":"stepdone"}
-{"actor":"mapbuilder", "msgType":"dispatch", "curstate":"doMap", "nextstate":"turnAndgo", "msgId":"stepfailed"}

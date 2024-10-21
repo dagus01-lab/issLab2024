@@ -58,6 +58,9 @@ Reply robotstate      : robotstate(POS,DIR)  for getrobotstate
 Request getenvmap     : getenvmap(X)
 Reply   envmap        : envmap(MAP)  for getenvmap
 
+Dispatch pause: pause(N)
+Dispatch brdata: brdata(N)
+
 Context ctxbasicrobot ip [host="localhost" port=8020]
 
 //CodedQActor datacleaner    context ctxbasicrobot className "rx.dataCleaner"    //riceve l'evento sonarRobot
@@ -743,8 +746,8 @@ QActor perimetermeasure context ctxbasicrobot{
 	
 }
 
-/*QActor sonarobs context ctxbasicrobot{
-	State s0 initial{
+QActor sonarobs context ctxbasicrobot{
+	/*State s0 initial{
         println("$name STARTS ")
     }
     Goto work
@@ -755,11 +758,38 @@ QActor perimetermeasure context ctxbasicrobot{
     Transition t0 whenEvent sonardata -> handlesonardata
 
     State handlesonardata{
+    	forward basicrobotusage -m pause:pause(3000)
     	printCurrentMessage color yellow
     }
-    Goto work
+    Goto work*/
+    
+    [# var pauseSent = false #]
+	State s0 initial{ 
+		println("$name | START") color green
+		observeResource basicrobot msgid brdata 
+	}
+	Transition t0
+		whenMsg brdata   -> handlebrdata
+	
+	
+	State handlebrdata{
+		onMsg( brdata : brdata(basicrobot,DATA) ){
+			[# val data = payloadArg(1) #]
+			if [# data.contains("sonar")   #] {
+				if [# ! pauseSent #]{ 
+					forward basicrobotusage -m pause : pause(ok)
+					println("$name | sent pause to basicrobotusage $data") color magenta
+					[# pauseSent = true #]
+				}								
+			}else{ //other WEnv info
+				[# pauseSent = false #]  //avoid repetirions of pause
+			}
+		}
+ 	}
+	Transition t0
+ 		whenMsg brdata -> handlebrdata
 
-}*/
+}
 
 /*
  * ------------------------------
@@ -798,13 +828,15 @@ QActor basicrobotusage context ctxbasicrobot{
 	State dowork{
 		
 	}
-	Transition t0 whenEvent sonardata -> handlesonardata
-				  whenReply stepdone   -> handleStepDone
+	Transition t0 whenReply stepdone   -> handleStepDone
 	              whenReply stepfailed -> handleStepFail
 	              whenReply perimeter -> handlePerimeterMeasureEnd
+	              whenInterrupt pause -> handlesonardata
 	
 	State handlesonardata{
+		println("Sonar found. Waiting...") color yellow
     	delay 3000
+    	returnFromInterrupt
     }
     Goto dowork
 	

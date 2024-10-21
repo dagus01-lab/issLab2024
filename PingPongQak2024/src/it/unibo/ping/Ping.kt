@@ -21,56 +21,40 @@ class Ping ( name: String, scope: CoroutineScope, isconfined: Boolean=false  ) :
 	}
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
 		//val interruptedStateTransitions = mutableListOf<Transition>()
-		  var N = 1;   
+		
+				val N = 1
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
-						delay(1000) 
-						CommUtils.outblue("$name sends $N  ")
-						//genTimer( actor, state )
-					}
-					//After Lenzi Aug2002
-					sysaction { //it:State
-					}	 	 
-					 transition(edgeName="t00",targetState="startgamestate",cond=whenEvent("startgame"))
-				}	 
-				state("startgamestate") { //this:State
-					action { //it:State
+						CommUtils.outblue("$name STARTS  ")
+						delay(2000) 
 						forward("ball", "ball($N)" ,"pong" ) 
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
 					sysaction { //it:State
+				 	 		stateTimer = TimerActor("timer_s0", 
+				 	 					  scope, context!!, "local_tout_"+name+"_s0", 5000.toLong() )  //OCT2023
 					}	 	 
-					 transition( edgeName="goto",targetState="receive", cond=doswitch() )
+					 transition(edgeName="t00",targetState="endOfExchange",cond=whenTimeout("local_tout_"+name+"_s0"))   
+					transition(edgeName="t01",targetState="handleBall",cond=whenDispatch("ball"))
 				}	 
-				state("receive") { //this:State
+				state("handleBall") { //this:State
 					action { //it:State
+						CommUtils.outcyan("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
+						 	   
+						delay(2000) 
+						System.exit(0) 
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition(edgeName="t01",targetState="reply",cond=whenDispatch("ball"))
-					transition(edgeName="t02",targetState="endofexchange",cond=whenEvent("stopgame"))
 				}	 
-				state("reply") { //this:State
+				state("endOfExchange") { //this:State
 					action { //it:State
-						 N = N + 1  
-						delay(500) 
-						CommUtils.outblue("$name sends $N  ")
-						forward("ball", "ball($N)" ,"pong" ) 
-						//genTimer( actor, state )
-					}
-					//After Lenzi Aug2002
-					sysaction { //it:State
-					}	 	 
-					 transition( edgeName="goto",targetState="receive", cond=doswitch() )
-				}	 
-				state("endofexchange") { //this:State
-					action { //it:State
-						CommUtils.outblue("$name ENDS ")
-						 System.exit(0)  
+						CommUtils.outblue("$name exiting...")
+						System.exit(0) 
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
