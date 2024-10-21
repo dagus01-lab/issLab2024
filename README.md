@@ -1,1 +1,2 @@
-Repository relativa al corso di Ingegneria dei Sistemi Software M Unibo
+# IdSS
+Repository personale relativa al corso di Ingegneria dei Sistemi Software M del CdL di Ingegneria Informatica Magistrale.
